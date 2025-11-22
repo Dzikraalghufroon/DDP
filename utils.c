@@ -4,7 +4,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-bool is_file_missing_or_empty(const char *namaFile) {
+bool file_tidak_ada_atau_kosong (const char *namaFile) {
     FILE *fp = fopen(namaFile, "r");
     //jika file tidak ada return true
     if (!fp) return true;
@@ -32,4 +32,22 @@ bool validasi_nominal(long nominal){
     return false;
     }
     return true;
+}
+
+int array_length(){
+    return 0;
+}
+
+bool lanjut_tambah_pos(char var){
+    if (var == 'y' || var == 'Y') {
+        return true;
+    }
+    return false;
+}
+
+bool berhenti_menambah(char var){
+    if (var == 'y' || var == 'Y') {
+        return true;
+    }
+    return false;
 }

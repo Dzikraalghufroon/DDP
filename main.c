@@ -11,17 +11,6 @@ int main(){
         // clearScreen();
 
         // header();
-
-        printf(
-            "=========================== MENU UTAMA ===========================");
-        printf(" \n");
-        printf("     1. Pencatatan Pos Anggaran\n");
-        printf("     2. Pencatatan Transaksi\n");
-        printf("     3. Tampilkan laporan keuangan\n");
-        printf("     0. Keluar\n");
-        printf(
-            "==================================================================");
-        printf("\n \tPilih menu (0-3): ");
         /*
             perulangan untuk navigasi 
         */
