@@ -4,6 +4,28 @@
 #include <time.h>
 #include <stdlib.h>
 
+struct PosAnggaran {
+  char pos[50];
+  long batas_nominal;
+};
+struct Transaksi {
+    char kode[10];
+    char jenis[20];
+    char pos[50];
+    long nominal;
+    char tanggal[20];
+    char keterangan[50];
+};
+
+struct RekapPengeluaran{
+  char pos[50];
+  long nominal;
+  long realisasi;
+  long sisa;
+  int jumlah_transaksi;
+  char status[10];
+};
+
 bool file_tidak_ada_atau_kosong (const char *namaFile) {
     FILE *fp = fopen(namaFile, "r");
     //jika file tidak ada return true
@@ -46,8 +68,22 @@ bool lanjut_tambah_pos(char var){
 }
 
 bool berhenti_menambah(char var){
-    if (var == 'y' || var == 'Y') {
+    if (var == 'n' || var == 'N') {
         return true;
     }
     return false;
+}
+
+void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas){
+    int kapasitas_baru = (*kapasitas) * 2;
+
+    struct PosAnggaran *temp = realloc(*arr, kapasitas_baru * sizeof(struct PosAnggaran));
+
+    if(!temp){
+        free(*arr);
+        *arr = NULL;
+        return;
+    }
+    *arr = temp;
+    *kapasitas = kapasitas_baru;
 }

@@ -3,7 +3,7 @@
 
 struct PosAnggaran {
   char pos[50];
-  long double batas_nominal;
+  long batas_nominal;
 };
 struct Transaksi {
     char kode[10];
@@ -71,10 +71,16 @@ void daftar_pos_anggaran_view(struct PosAnggaran arr[], int jumlah){
     printf("| No   | Pos Anggaran                   | Batas Nominal    |\n");
     printf("+------+--------------------------------+------------------+\n");
     for (int i = 0; i < jumlah; i++) {
-        printf("| %-4d | %-30s | %16.2Lf |\n", i + 1, arr[i].pos, arr[i].batas_nominal);
+        printf("| %-4d | %-30s | %16.2ld |\n", i + 1, arr[i].pos, arr[i].batas_nominal);
     }
     printf("+------+--------------------------------+------------------+\n");
 
+}
+
+void masukkan_nominal(long *nominal){
+    printf("Masukkan nominal: ");
+    scanf("%ld", nominal);
+    getchar();
 }
 
 void footer_line(){

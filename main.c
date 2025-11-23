@@ -4,16 +4,20 @@
 #include <time.h>
 #include <stdlib.h>
 
+void clearScreen();
+void header();
+void menu_pos_anggaran();
+void menu_utama();
 int main(){
     int navigasi;
     bool menu = true;
     while (menu) {
-        // clearScreen();
 
-        // header();
-        /*
-            perulangan untuk navigasi 
-        */
+        clearScreen();
+        header();
+        menu_utama();
+
+        // perulangan untuk navigasi 
         scanf(" %d", &navigasi);
         getchar();
         switch (navigasi) {
@@ -23,7 +27,7 @@ int main(){
             menu = false;
             break;
             case 1:
-            //   menu_pos_anggaran_controller();
+            menu_pos_anggaran();
             break;
             case 2:
             //   menu_transaksi();

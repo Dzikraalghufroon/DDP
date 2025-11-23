@@ -30,10 +30,13 @@ void clearScreen();
 void header();
 void footer_line();
 void menu_pos_anggaran_view();
+void daftar_pos_anggaran_view(struct PosAnggaran arr[], int jumlah);
+void masukkan_nominal(long *nominal);
 void konfirmasi_penambahan_pos();
 bool validasi_nominal(long nominal);
 bool lanjut_tambah_pos(char var);
 bool berhenti_menambah(char var);
+void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas);
 
 bool cekPos_anggaran(const char *data){
     FILE *fp = fopen("pos_anggaran.txt", "r");
@@ -49,7 +52,43 @@ bool cekPos_anggaran(const char *data){
         }
     }
     return false;
+} 
+
+struct PosAnggaran *getPosAnggaran(int *jumlahOut) {
+    FILE *fp = fopen("pos_anggaran.txt", "r");
+    if (!fp) {
+        printf("file pos anggaran tidak ditemukan\n");
+        *jumlahOut = 0;
+        return NULL;
+    }
+    int kapasitas = 50;  
+    int count = 0;
+
+    struct PosAnggaran *data = malloc(kapasitas * sizeof(struct PosAnggaran));
+    if (!data) {
+        fclose(fp);
+        return NULL;
+    }
+
+    while (true) {
+        if (count == kapasitas) {
+            tambah_ukuran_array_posAnggaran(&data, &kapasitas);
+            if (!data) {
+                fclose(fp);
+                return NULL;
+            }
+        }
+        if (fscanf(fp, "%49[^|]|%ld\n", data[count].pos, &data[count].batas_nominal) != 2) {
+            break;  
+        }
+        count++;
+    }
+
+    fclose(fp);
+    *jumlahOut = count;
+    return data;
 }
+
 void menyimpan_pos_anggaran(char *nama_pos, long nominal){
     getchar();
         FILE *fp = fopen("pos_anggaran.txt", "a");
@@ -62,6 +101,70 @@ void menyimpan_pos_anggaran(char *nama_pos, long nominal){
 
         printf("Data berhasil ditambahkan!\n");
 }
+
+bool edit_data_dari_file_pos_anggaran(char *namaCari){
+    char nama_pos[50]; 
+    long nominal; 
+    bool result = false;
+    FILE *fp = fopen("pos_anggaran.txt", "r");
+    FILE *EDIT = fopen("Temp_pos_anggaran.txt", "w");
+    if (!fp || !EDIT) {
+        printf("Gagal membuka file!\n");
+        return false;
+    }
+    while (fscanf(fp, "%[^|]|%ld\n", nama_pos, &nominal) == 2) {
+      nama_pos[strcspn(nama_pos, "\n")] = '\0'; // hapus newline
+        namaCari[strcspn(namaCari, "\n")] = '\0';
+        // jika ditemukan data yang cocok maka data batas nominal yang sebelumnya
+        // akan di ganti dengan yang baru
+        if (strcmp(nama_pos, namaCari) == 0) {
+            result = true;
+            masukkan_nominal(&nominal);
+        }
+        // melakukan proses menulis ke sebuah file yang akan menampung data baru
+        fprintf(EDIT, "%s|%ld\n", nama_pos, nominal);
+    }
+
+    fclose(fp);
+    fclose(EDIT);
+
+    // menghapus file lama untuk diganti oleh file baru
+    remove("pos_anggaran.txt");
+    rename("Temp_pos_anggaran.txt", "pos_anggaran.txt");
+    return result;
+}
+
+bool hapus_data_dari_file_pos_anggaran(char *namaCari){
+    char nama_pos[50]; 
+    long nominal; 
+    bool result = false;
+    FILE *fp = fopen("pos_anggaran.txt", "r");
+    FILE *DELETE = fopen("Temp_pos_anggaran.txt", "w");
+    if (!fp || !DELETE) {
+        printf("Gagal membuka file!\n");
+        return false;
+    }
+    while (fscanf(fp, "%[^|]|%ld\n", nama_pos, &nominal) == 2) {
+        nama_pos[strcspn(nama_pos, "\n")] = '\0'; 
+        namaCari[strcspn(namaCari, "\n")] = '\0';
+        // jika ditemukan data yang cocok maka data batas nominal yang sebelumnya
+        // akan di ganti dengan yang baru
+        if (strcmp(nama_pos, namaCari) != 0) {
+            result = true;
+        // melakukan proses menulis ke sebuah file yang akan menampung data baru
+            fprintf(DELETE, "%s|%ld\n", nama_pos, nominal);
+        }
+    }
+
+    fclose(fp);
+    fclose(DELETE);
+
+    // menghapus file lama untuk diganti oleh file baru
+    remove("pos_anggaran.txt");
+    rename("Temp_pos_anggaran.txt", "pos_anggaran.txt");
+    return result;
+}
+
 
 void tambah_pos_anggaran(){
     struct PosAnggaran data;
@@ -94,7 +197,7 @@ void tambah_pos_anggaran(){
         
         printf("\tMasukkan batas anggaran: ");
         scanf(" %ld", &data.batas_nominal);
-        getchar();
+
         if (!validasi_nominal(data.batas_nominal)) { 
                 printf("Anda menetapkan batas anggaran sebesar '%ld', batas anggaran "
                 "harus lebih besar dari nol.\n", data.batas_nominal);
@@ -121,15 +224,64 @@ void tambah_pos_anggaran(){
             scanf(" %c", &lanjut);
             getchar();
             if (lanjut_tambah_pos(lanjut)) {
-            mengisi = false;
-            break;
+                break;
             } else if (berhenti_menambah(lanjut)) {
+                mengisi = false;
             break;
             } else {
             alert = true;
             }
         }
     }
+}
+
+void edit_pos_anggaran(){
+    char namaPos[50];
+    bool success = false;
+    int jumlahPos = 0;
+    struct PosAnggaran *daftarPosAnggaran = getPosAnggaran(&jumlahPos);
+    clearScreen();
+    header();
+
+    daftar_pos_anggaran_view(daftarPosAnggaran, jumlahPos);
+
+    printf("Masukkan nama pos yang nominalnya ingin diubah: ");
+    fgets(namaPos, sizeof(namaPos), stdin);
+    namaPos[strcspn(namaPos, "\n")] = '\0';
+
+    success = edit_data_dari_file_pos_anggaran(namaPos);
+    if (success) {
+      printf("\nData berhasil diubah!\n");
+    } else {
+      printf("\nData tidak ditemukan!\n");
+    }
+
+    printf("Tekan Enter untuk kembali...");
+    getchar();
+}
+void hapus_pos_anggaran(){
+    char namaPos[50];
+    bool success = false;
+    int jumlahPos = 0;
+    struct PosAnggaran *daftarPosAnggaran = getPosAnggaran(&jumlahPos);
+    clearScreen();
+    header();
+
+    daftar_pos_anggaran_view(daftarPosAnggaran, jumlahPos);
+
+    printf("Masukkan nama pos yang ingin dihapus: ");
+    fgets(namaPos, sizeof(namaPos), stdin);
+    namaPos[strcspn(namaPos, "\n")] = '\0';
+
+    success = hapus_data_dari_file_pos_anggaran(namaPos);
+    if (success) {
+      printf("\nData berhasil dihapus!\n");
+    } else {
+      printf("\nData tidak ditemukan!\n");
+    }
+
+    printf("Tekan Enter untuk kembali...");
+    getchar();
 }
 
 void menu_pos_anggaran() {
@@ -154,11 +306,11 @@ void menu_pos_anggaran() {
             break;
 
         case 2:
-            // edit_pos_anggaran_controller();
+            edit_pos_anggaran();
             break;
 
         case 3:
-            // hapus_pos_anggaran_controller();
+            hapus_pos_anggaran();
             break;
 
         default:
