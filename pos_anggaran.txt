@@ -1,4 +1,0 @@
-laugh laugh|1000
-usa|10000
-pyon pyon usa usa|10000
-fight|100

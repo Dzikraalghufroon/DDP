@@ -11,12 +11,17 @@ void menu_utama();
 int main(){
     int navigasi;
     bool menu = true;
+    bool alert = false;
     while (menu) {
 
         clearScreen();
         header();
         menu_utama();
 
+        if (alert) {
+            printf("\nMohon Pilih menu hanya (0-3): ");
+        }
+        alert = false;
         // perulangan untuk navigasi 
         scanf(" %d", &navigasi);
         getchar();
@@ -36,7 +41,7 @@ int main(){
             //  menu_analisis_controller();
             break;
             default:
-            printf("Mohon Pilih menu hanya (0-5): ");
+                alert = true;
             break;
         }
         
