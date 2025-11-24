@@ -89,7 +89,8 @@ void input_pos(char *pos){
 void input_nominal(long *nominal){
     while (true) {
         printf("\nMasukkan nominal : ");
-        scanf("%ld ", nominal);
+        scanf("%ld", nominal);
+        getchar();
         // while (getchar() != '\n');
         if (validasi_nominal(*nominal)) {
             break;
@@ -106,20 +107,20 @@ void input_deskripsi(char *deskripsi){
     deskripsi[strcspn(deskripsi, "\n")] = '\0'; 
 }
 
-void tambah_transaksi_pemasukan(char *kode_transaksi,char * tanggal,long double nominal,char *deskripsi){
+void tambah_transaksi_pemasukan(char *kode_transaksi,char * tanggal,long nominal,char *deskripsi){
     FILE *fwrite = fopen("data_transaksi.txt", "a");
     
     //menyimpan dengan format (kode transaksi | tanggal | Pos Anggaran | Jenis | Nominal | Deskripsi)
-    fprintf(fwrite, "%s|%s|%s|%s|%Lf|%s\n", kode_transaksi, tanggal,"Pemasukan","Pemasukan",nominal,deskripsi);
+    fprintf(fwrite, "%s|%s|%s|%s|%ld|%s\n", kode_transaksi, tanggal,"Pemasukan","Pemasukan",nominal,deskripsi);
     fclose(fwrite);
 }
 
 
-void tambah_transaksi_pengeluaran(char *kode_transaksi,char * tanggal,char *pos,long double nominal,char *deskripsi){
+void tambah_transaksi_pengeluaran(char *kode_transaksi,char * tanggal,char *pos,long nominal,char *deskripsi){
     FILE *fwrite = fopen("data_transaksi.txt", "a");
     
     //menyimpan dengan format (kode transaksi | tanggal | Pos Anggaran | Jenis | Nominal | Deskripsi)
-    fprintf(fwrite, "%s|%s|%s|%s|%Lf|%s\n", kode_transaksi, tanggal,pos,"Pengeluaran",nominal,deskripsi);
+    fprintf(fwrite, "%s|%s|%s|%s|%ld|%s\n", kode_transaksi, tanggal,pos,"Pengeluaran",nominal,deskripsi);
     fclose(fwrite);
 }
 
@@ -133,6 +134,7 @@ void transaksi_pemasukan(){
     input_deskripsi(data.keterangan);
 
     tambah_transaksi_pemasukan(getId_transaksi(), getTanggal(), data.nominal, data.keterangan);
+    clearScreen();
 }
 
 void transaksi_pengeluaran(){
@@ -152,6 +154,7 @@ void transaksi_pengeluaran(){
     tambah_transaksi_pengeluaran(getId_transaksi(), getTanggal(), data.pos, data.nominal, data.keterangan);
 
     free(daftarPosAnggaran);
+    clearScreen();
 }
 
 void menu_transaksi(){

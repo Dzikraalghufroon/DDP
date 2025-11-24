@@ -8,6 +8,7 @@ void clearScreen();
 void header();
 void menu_pos_anggaran();
 void menu_utama();
+void menu_transaksi();
 int main(){
     int navigasi;
     bool menu = true;
@@ -35,7 +36,7 @@ int main(){
             menu_pos_anggaran();
             break;
             case 2:
-            //   menu_transaksi();
+              menu_transaksi();
             break;
             case 3:
             //  menu_analisis_controller();
