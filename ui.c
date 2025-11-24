@@ -118,6 +118,18 @@ void menu_rekapitulasi(){
     printf("0. kembali");
 }
 
+void menu_bulan(){
+    printf("\nPilih bulan yang ingin ditampilkan di laporan\n");
+    printf("1. Januari \t 7. Juli\n");
+    printf("2. Februari\t 8. Agustus\n");
+    printf("3. maret   \t 9. September\n");
+    printf("4. April   \t 10. Oktober\n");
+    printf("5. Mei     \t 11. November\n");
+    printf("6. Juni    \t 12. Desember\n");
+    printf("0. kembali");
+}
+
+
 void realisasi_tabel_header() {
 
     printf("Riwayat transaksi anda\n");

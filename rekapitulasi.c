@@ -29,12 +29,30 @@ struct RekapPengeluaran{
 void clearScreen();
 void header();
 void menu_rekapitulasi();
+void menu_bulan();
 void realisasi_transaksi_table(struct Transaksi *data, int jumlah);
 void tambah_ukuran_array_transaksi(struct Transaksi **arr, int *kapasitas);
 
 void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas);
 
-struct Transaksi *getPemasukan(int *jumlah_out){
+int filter_bulan(char *tanggal){
+    int d, m, y;
+        if (sscanf(tanggal, "%d/%d/%d", &d, &m, &y) == 3) {
+        return m;
+        }
+        return 0;
+}
+
+int filter_tahun(char *tanggal){
+    int d, m, y;
+        if (sscanf(tanggal, "%d/%d/%d", &d, &m, &y) == 3) {
+        return y;
+        }
+        return 0;
+}
+
+
+struct Transaksi *getPemasukan(int *jumlah_out, int target_bulan){
     int kapasitas = 10;
     *jumlah_out = 0;
     char line[150];
@@ -51,25 +69,37 @@ struct Transaksi *getPemasukan(int *jumlah_out){
         free(data);
         return NULL;
     }
-    while (sscanf(line, "%49[^|]|%49[^|]|%49[^|]|%49[^|]|%ld|%49[^\n]",
+    while (fgets(line, sizeof(line), readFile)) {
+
+        if (sscanf(line, "%49[^|]|%49[^|]|%49[^|]|%49[^|]|%ld|%49[^\n]",
                    dataTransaksi.kode,
                    dataTransaksi.tanggal,
                    dataTransaksi.pos,
                    dataTransaksi.jenis,
                    &dataTransaksi.nominal,
-                   dataTransaksi.keterangan) == 6) {
-                    if (strcmp(dataTransaksi.jenis, "Pemasukan") == 0){
-                        if (*jumlah_out == kapasitas) {
-                            tambah_ukuran_array_transaksi(&data, &kapasitas);
-                        }
-                    }
-                    data[(*jumlah_out)++] = dataTransaksi;
+                   dataTransaksi.keterangan) != 6) {
+            continue;
+        }
+
+        // Filter jenis + bulan
+        int m = filter_bulan(dataTransaksi.tanggal);
+        if (strcmp(dataTransaksi.jenis, "Pemasukan") == 0 && m == target_bulan) {
+
+            // Perlu perbesar kapasitas
+            if (*jumlah_out == kapasitas) {
+                tambah_ukuran_array_transaksi(&data, &kapasitas);
+            }
+
+            // Simpan
+            data[*jumlah_out] = dataTransaksi;
+            (*jumlah_out)++;
+        }
     }
     fclose(readFile);
     return data;
 }
 
-struct Transaksi *getPengeluaran(int *jumlah_out){
+struct Transaksi *getPengeluaran(int *jumlah_out,int target_bulan){
     int kapasitas = 10;
     *jumlah_out = 0;
     char line[150];
@@ -86,19 +116,31 @@ struct Transaksi *getPengeluaran(int *jumlah_out){
         free(data);
         return NULL;
     }
-    while (sscanf(line, "%49[^|]|%49[^|]|%49[^|]|%49[^|]|%ld|%49[^\n]",
+    while (fgets(line, sizeof(line), readFile)) {
+
+        if (sscanf(line, "%49[^|]|%49[^|]|%49[^|]|%49[^|]|%ld|%49[^\n]",
                    dataTransaksi.kode,
                    dataTransaksi.tanggal,
                    dataTransaksi.pos,
                    dataTransaksi.jenis,
                    &dataTransaksi.nominal,
-                   dataTransaksi.keterangan) == 6) {
-                    if (strcmp(dataTransaksi.jenis, "Pengeluaran") == 0){
-                        if (*jumlah_out == kapasitas) {
-                            tambah_ukuran_array_transaksi(&data, &kapasitas);
-                        }
-                    }
-                    data[(*jumlah_out)++] = dataTransaksi;
+                   dataTransaksi.keterangan) != 6) {
+            continue;
+        }
+
+        // Filter jenis + bulan
+        int m = filter_bulan(dataTransaksi.tanggal);
+        if (strcmp(dataTransaksi.jenis, "Pengeluaran") == 0 && m == target_bulan) {
+
+            // Perlu perbesar kapasitas
+            if (*jumlah_out == kapasitas) {
+                tambah_ukuran_array_transaksi(&data, &kapasitas);
+            }
+
+            // Simpan
+            data[*jumlah_out] = dataTransaksi;
+            (*jumlah_out)++;
+        }
     }
     fclose(readFile);
     return data;
@@ -117,10 +159,10 @@ char *kondisi_keuangan(int saldo){
     return kondisi;
 }
 
-long pemasukan_total(int *jumlah_data_out){
+long pemasukan_total(int *jumlah_data_out,int target_bulan){
     int jumlah_data;
     long total = 0;
-    struct Transaksi *Pemasukan = getPemasukan(&jumlah_data);
+    struct Transaksi *Pemasukan = getPemasukan(&jumlah_data, target_bulan);
     if (Pemasukan) {
         for (int i = 0; i < jumlah_data; i++) {
             total += Pemasukan[i].nominal;
@@ -133,10 +175,10 @@ long pemasukan_total(int *jumlah_data_out){
     return total;
 }
 
-long pengeluaran_total(int *jumlah_data_out){
+long pengeluaran_total(int *jumlah_data_out,int target_bulan){
     int jumlah_data;
     long total = 0;
-    struct Transaksi *Pengeluaran = getPengeluaran(&jumlah_data);
+    struct Transaksi *Pengeluaran = getPengeluaran(&jumlah_data,target_bulan);
     if (Pengeluaran) {
         for (int i = 0; i < jumlah_data; i++) {
             total += Pengeluaran[i].nominal;
@@ -170,9 +212,9 @@ int hitung_jumlah_transaksi_pengeluaran(){
     return count;
 }
 
-long calculate_saldo() {
-  long income = pemasukan_total(NULL);
-  long spending = pengeluaran_total(NULL);
+long calculate_saldo(int target_bulan) {
+  long income = pemasukan_total(NULL,target_bulan);
+  long spending = pengeluaran_total(NULL,target_bulan);
   return income - spending;
 }
 
@@ -183,10 +225,10 @@ bool pengeluaran_rataRata(long params){
     }
     return false;    
 }
-long kalkulasi_pengeluaran_rataRata(){
-    long saldo= calculate_saldo();
+long kalkulasi_pengeluaran_rataRata(int target_bulan){
+    long saldo= calculate_saldo(target_bulan);
    if (pengeluaran_rataRata(saldo)) {
-    return pengeluaran_total(NULL)/hitung_jumlah_transaksi_pengeluaran();
+    return pengeluaran_total(NULL,target_bulan)/hitung_jumlah_transaksi_pengeluaran();
    } 
    return 0;
 }
@@ -197,8 +239,8 @@ void menu_rekapitulasi(){
   while (menu) {
     clearScreen();
     header();
-    menu_rekapitulasi();
-    printf("\n \tPilih menu (0-3): ");
+    menu_bulan();
+    printf("\n \tPilih menu (0-12): ");
 
     scanf("%d", &navigasi);
     getchar();
@@ -220,6 +262,33 @@ void menu_rekapitulasi(){
         // analisis_keuangan_controller_main(3);
         break;
 
+    case 4:
+        // analisis_keuangan_controller_main(3);
+        break;
+    case 5:
+        // analisis_keuangan_controller_main(3);
+        break;
+    case 6:
+        // analisis_keuangan_controller_main(3);
+        break;
+    case 7:
+        // analisis_keuangan_controller_main(3);
+        break;
+    case 8:
+        // analisis_keuangan_controller_main(3);
+        break;
+    case 9:
+        // analisis_keuangan_controller_main(3);
+        break;
+    case 10:
+        // analisis_keuangan_controller_main(3);
+        break;
+    case 11:
+        // analisis_keuangan_controller_main(3);
+        break;
+    case 12:
+        // analisis_keuangan_controller_main(3);
+        break;
     default:
         printf("Mohon Pilih menu hanya (0-3)\n");
         getchar();
