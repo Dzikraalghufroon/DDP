@@ -54,6 +54,56 @@ bool cekPos_anggaran(const char *data){
     return false;
 } 
 
+void input_pos_anggaran(char *pos){
+    printf("\tMasukkan Nama pos: ");
+    fgets(pos, sizeof(pos), stdin);
+    pos[strcspn(pos, "\n")] = '\0';
+}
+
+void pos_anggaran_sudah_ada(char *pos){
+    printf("Pos '%s' sudah ada di dalam file. Silakan masukkan nama lain.\n",pos);
+    printf("Tekan ENTER untuk melanjutkan...");
+    getchar();
+}
+
+void input_batas_anggaran(long *nominal){
+    printf("\tMasukkan batas anggaran: ");
+    scanf(" %ld", nominal);
+}
+
+void validasi_batas_anggaran(long nominal){
+    printf("Anda menetapkan batas anggaran sebesar '%ld', batas anggaran "
+        "harus lebih besar dari nol.\n", nominal);
+    printf("Tekan ENTER untuk melanjutkan...");
+    getchar();
+}
+
+void tanya_lanjut(bool *mengisi){
+    bool alert = false;
+    char lanjut;
+    while (true) {
+        //menanyakan kepada user apakah masih ingin menambah data atau sudah selesai
+        header();
+        if (alert) {
+            clearScreen();
+            header();
+            printf("\n mohon hanya menginput (y/n)\n");
+        }
+        konfirmasi_penambahan_pos();
+
+        scanf(" %c", &lanjut);
+        getchar();
+        if (lanjut_tambah_pos(lanjut)) {
+            break;
+        } else if (berhenti_menambah(lanjut)) {
+            mengisi = false;
+        break;
+        } else {
+        alert = true;
+        }
+    }
+}
+
 struct PosAnggaran *getPosAnggaran(int *jumlahOut) {
     FILE *fp = fopen("pos_anggaran.txt", "r");
     if (!fp) {
@@ -170,39 +220,27 @@ void tambah_pos_anggaran(){
     struct PosAnggaran data;
 
     bool mengisi = true;
-    char lanjut;
-    bool alert = false;
     bool sudah_ada = false;
 
     while (mengisi) {
         clearScreen(); 
         header();
         // User melakukan input untuk nama pos
-        printf("\tMasukkan Nama pos: ");
-        fgets(data.pos, sizeof(data.pos), stdin);
-        data.pos[strcspn(data.pos, "\n")] = '\0'; // hapus newline
-
+        input_pos_anggaran(data.pos);
         // Periksa apakah pos sudah ada di file
-        
         sudah_ada = cekPos_anggaran(data.pos);
         if (sudah_ada) {
-            printf("Pos '%s' sudah ada di dalam file. Silakan masukkan nama lain.\n",
-                data.pos);
-            printf("Tekan ENTER untuk melanjutkan...");
-            getchar();
+            pos_anggaran_sudah_ada(data.pos);
             continue;
         }
         
         // User melakukan input untuk batas anggaran
         
-        printf("\tMasukkan batas anggaran: ");
-        scanf(" %ld", &data.batas_nominal);
-
+        input_batas_anggaran(&data.batas_nominal);
+        //memeriksa apakah nominal kurang atau sama dengan 0
         if (!validasi_nominal(data.batas_nominal)) { 
-                printf("Anda menetapkan batas anggaran sebesar '%ld', batas anggaran "
-                "harus lebih besar dari nol.\n", data.batas_nominal);
-                printf("Tekan ENTER untuk melanjutkan...");
-                getchar();
+            //memanggil modul yang akan menampilkan peringatan bahwa nominal harus lebih besar dari 0
+                validasi_batas_anggaran(data.batas_nominal);
                 continue;
             }
         
@@ -210,28 +248,9 @@ void tambah_pos_anggaran(){
         menyimpan_pos_anggaran(data.pos, data.batas_nominal);
         clearScreen(); 
 
-        // perulangan untuk memvalidasi jawaban
-        while (true) {
-            //menanyakan kepada user apakah masih ingin menambah data atau sudah selesai
-            header();
-                if (alert) {
-                clearScreen();
-                header();
-                printf("\n mohon hanya menginput (y/n)\n");
-            }
-            konfirmasi_penambahan_pos();
-
-            scanf(" %c", &lanjut);
-            getchar();
-            if (lanjut_tambah_pos(lanjut)) {
-                break;
-            } else if (berhenti_menambah(lanjut)) {
-                mengisi = false;
-            break;
-            } else {
-            alert = true;
-            }
-        }
+        // memanggil procedure yang berisi perulangan untuk memvalidasi jawaban apakah user
+        // masih ingin menambah data
+        tanya_lanjut(&mengisi);
     }
 }
 
