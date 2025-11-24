@@ -258,6 +258,7 @@ void edit_pos_anggaran(){
 
     printf("Tekan Enter untuk kembali...");
     getchar();
+    free(daftarPosAnggaran);
 }
 void hapus_pos_anggaran(){
     char namaPos[50];
@@ -282,6 +283,7 @@ void hapus_pos_anggaran(){
 
     printf("Tekan Enter untuk kembali...");
     getchar();
+    free(daftarPosAnggaran);
 }
 
 void menu_pos_anggaran() {

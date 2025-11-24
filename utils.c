@@ -87,3 +87,4 @@ void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas){
     *arr = temp;
     *kapasitas = kapasitas_baru;
 }
+
