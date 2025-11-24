@@ -88,3 +88,17 @@ void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas){
     *kapasitas = kapasitas_baru;
 }
 
+void tambah_ukuran_array_transaksi(struct Transaksi **arr, int *kapasitas){
+    int kapasitas_baru = (*kapasitas) * 2;
+
+    struct Transaksi *temp = realloc(*arr, kapasitas_baru * sizeof(struct Transaksi));
+
+    if(!temp){
+        free(*arr);
+        *arr = NULL;
+        return;
+    }
+    *arr = temp;
+    *kapasitas = kapasitas_baru;
+}
+

@@ -109,3 +109,43 @@ void input_pemasukan_view(){
         printf("+-Pemasukan harus bilangan positif ( >0 )-+\n");
         printf("\n#_________________________________________________________________________________________________#\n");
 }
+
+void menu_rekapitulasi(){
+    printf("\nPilih Opsi untuk menampilkan transaksi\n");
+    printf("1. Pemasukan dan Transaksi\n");
+    printf("2. Hanya Pemasukan\n");
+    printf("3. Hanya Pengeluaran\n");
+    printf("0. kembali");
+}
+
+void realisasi_tabel_header() {
+
+    printf("Riwayat transaksi anda\n");
+    printf("-----------------------------------------------------------------------------------------------------------------------------\n");
+    printf("| %-10s | %-12s | %-15s | %-10s | %-15s | %-30s |\n",
+           "ID", "Tanggal", "Pos Anggaran", "Jenis", "Nominal (Rp)", "Deskripsi");
+    printf("-----------------------------------------------------------------------------------------------------------------------------\n");
+}
+void realisasi_tabel_row(struct Transaksi *t) {
+    printf("| %-10s | %-12s | %-15s | %-10s | %-15.2Lf | %-30s |\n",
+           t->kode,
+           t->tanggal,
+           t->pos,
+           t->jenis,
+           t->nominal,
+           t->keterangan);
+}
+
+void realisasi_tabel_footer() {
+    printf("-----------------------------------------------------------------------------------------------------------------------------\n");
+}
+
+void realisasi_transaksi_table(struct Transaksi *data, int jumlah) {
+    realisasi_tabel_header();
+
+    for (int i = 0; i < jumlah; i++) {
+        realisasi_tabel_row(&data[i]);
+    }
+
+    realisasi_tabel_footer();
+}
