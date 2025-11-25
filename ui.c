@@ -121,11 +121,11 @@ void menu_rekapitulasi(){
 void menu_tahun(int *tahun_array, int jumlah_tahun){
     printf("\nPilih tahun yang ingin ditampilkan di laporan\n");
     for (int i = 0; i < jumlah_tahun; i++) {
-        printf("%d. %d\n", i+1,tahun_array[i]);
+        printf("%d\n", tahun_array[i]);
     }
     printf("0. kembali");
 
-    printf("\n \tPilih tahun (0 - %d): ", jumlah_tahun);
+    printf("\n \tPilih tahun (contoh :2020): ");
 }
 
 void menu_bulan(){

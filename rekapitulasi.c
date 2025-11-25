@@ -148,7 +148,7 @@ int *data_tahun_dari_transaksi(int *jumlah_tahun_out) {
     return tahun_list; // berisi array tahun unik
 }
 
-struct Transaksi *getPemasukan(int *jumlah_out, int target_bulan){
+struct Transaksi *getPemasukan(int *jumlah_out, int target_bulan, int target_tahun){
     int kapasitas = 10;
     *jumlah_out = 0;
     char line[150];
@@ -179,7 +179,8 @@ struct Transaksi *getPemasukan(int *jumlah_out, int target_bulan){
 
         // Filter jenis + bulan
         int m = filter_bulan(dataTransaksi.tanggal);
-        if (strcmp(dataTransaksi.jenis, "Pemasukan") == 0 && m == target_bulan) {
+        int y = filter_tahun(dataTransaksi.tanggal);
+        if (strcmp(dataTransaksi.jenis, "Pemasukan") == 0 && m == target_bulan && y == target_tahun) {
 
             // Perlu perbesar kapasitas
             if (*jumlah_out == kapasitas) {
@@ -195,7 +196,7 @@ struct Transaksi *getPemasukan(int *jumlah_out, int target_bulan){
     return data;
 }
 
-struct Transaksi *getPengeluaran(int *jumlah_out,int target_bulan){
+struct Transaksi *getPengeluaran(int *jumlah_out,int target_bulan, int target_tahun){
     int kapasitas = 10;
     *jumlah_out = 0;
     char line[150];
@@ -226,7 +227,8 @@ struct Transaksi *getPengeluaran(int *jumlah_out,int target_bulan){
 
         // Filter jenis + bulan
         int m = filter_bulan(dataTransaksi.tanggal);
-        if (strcmp(dataTransaksi.jenis, "Pengeluaran") == 0 && m == target_bulan) {
+        int y = filter_tahun(dataTransaksi.tanggal);
+        if (strcmp(dataTransaksi.jenis, "Pengeluaran") == 0 && m == target_bulan && y == target_tahun) {
 
             // Perlu perbesar kapasitas
             if (*jumlah_out == kapasitas) {
@@ -255,10 +257,10 @@ char *kondisi_keuangan(int saldo){
     return kondisi;
 }
 
-long pemasukan_total(int *jumlah_data_out,int target_bulan){
+long pemasukan_total(int *jumlah_data_out,int target_bulan, int target_tahun){
     int jumlah_data =0;
     long total = 0;
-    struct Transaksi *Pemasukan = getPemasukan(&jumlah_data, target_bulan);
+    struct Transaksi *Pemasukan = getPemasukan(&jumlah_data, target_bulan, target_tahun);
     if (Pemasukan) {
         for (int i = 0; i < jumlah_data; i++) {
             total += Pemasukan[i].nominal;
@@ -273,10 +275,10 @@ long pemasukan_total(int *jumlah_data_out,int target_bulan){
     return total;
 }
 
-long pengeluaran_total(int *jumlah_data_out,int target_bulan){
+long pengeluaran_total(int *jumlah_data_out,int target_bulan, int target_tahun){
     int jumlah_data = 0;
     long total = 0;
-    struct Transaksi *Pengeluaran = getPengeluaran(&jumlah_data,target_bulan);
+    struct Transaksi *Pengeluaran = getPengeluaran(&jumlah_data,target_bulan,target_tahun);
     if (Pengeluaran) {
         for (int i = 0; i < jumlah_data; i++) {
             total += Pengeluaran[i].nominal;
@@ -312,9 +314,9 @@ int hitung_jumlah_transaksi_pengeluaran(){
     return count;
 }
 
-long calculate_saldo(int target_bulan) {
-  long income = pemasukan_total(NULL,target_bulan);
-  long spending = pengeluaran_total(NULL,target_bulan);
+long calculate_saldo(int target_bulan, int target_tahun) {
+  long income = pemasukan_total(NULL,target_bulan,target_tahun);
+  long spending = pengeluaran_total(NULL,target_bulan,target_tahun);
   return income - spending;
 }
 
@@ -325,10 +327,10 @@ bool pengeluaran_rataRata(long params){
     }
     return false;    
 }
-long kalkulasi_pengeluaran_rataRata(int target_bulan){
-    long saldo= calculate_saldo(target_bulan);
+long kalkulasi_pengeluaran_rataRata(int target_bulan, int target_tahun){
+    long saldo= calculate_saldo(target_bulan,target_tahun);
    if (pengeluaran_rataRata(saldo)) {
-    return pengeluaran_total(NULL,target_bulan)/hitung_jumlah_transaksi_pengeluaran();
+    return pengeluaran_total(NULL,target_bulan,target_tahun)/hitung_jumlah_transaksi_pengeluaran();
    } 
    return 0;
 }
@@ -340,26 +342,26 @@ float persentase_dari_sisa_total_pemasukan(long saldo, long pemasukan){
     return ((float)saldo / (float)pemasukan) * 100.0f;
 }
 
-void Laporan_keuangan(int bulan){
+void Laporan_keuangan(int bulan, int tahun){
     int jumlah_transaksi_pemasukan;
     int jumlah_transaksi_pengeluaran;
     int jumlah_data_pemasukan;
     int jumlah_data_pengeluaran;
 
-    long saldo_akhir = calculate_saldo(bulan);
-    long total_pemasukan = pemasukan_total(&jumlah_transaksi_pemasukan,bulan);
-    long total_pengeluaran = pengeluaran_total(&jumlah_transaksi_pengeluaran, bulan);
+    long saldo_akhir = calculate_saldo(bulan,tahun);
+    long total_pemasukan = pemasukan_total(&jumlah_transaksi_pemasukan,bulan, tahun);
+    long total_pengeluaran = pengeluaran_total(&jumlah_transaksi_pengeluaran, bulan,tahun);
     float persentase_dari_sisa_pemasukan = persentase_dari_sisa_total_pemasukan(saldo_akhir,total_pemasukan);
 
-    struct Transaksi *Pengeluaran = getPengeluaran(&jumlah_data_pengeluaran,bulan);
-    struct Transaksi *Pemasukan = getPemasukan(&jumlah_data_pemasukan, bulan);
+    struct Transaksi *Pengeluaran = getPengeluaran(&jumlah_data_pengeluaran,bulan,tahun);
+    struct Transaksi *Pemasukan = getPemasukan(&jumlah_data_pemasukan, bulan,tahun);
 
     char kondisi_keuangan_mahasiswa[10];
     strcpy(kondisi_keuangan_mahasiswa, kondisi_keuangan( saldo_akhir));
 
     clearScreen();
     header();
-    laporan_keuangan_header(total_pemasukan, total_pengeluaran, saldo_akhir, kalkulasi_pengeluaran_rataRata(bulan),jumlah_transaksi_pemasukan,jumlah_transaksi_pengeluaran,nama_bulan(bulan));
+    laporan_keuangan_header(total_pemasukan, total_pengeluaran, saldo_akhir, kalkulasi_pengeluaran_rataRata(bulan,tahun),jumlah_transaksi_pemasukan,jumlah_transaksi_pengeluaran,nama_bulan(bulan));
 
     getchar();
     free(Pengeluaran);
@@ -428,7 +430,7 @@ void menu_utama_rekapitulasi(){
         // analisis_keuangan_controller_main(3);
         break;
     case 11:
-        Laporan_keuangan(navigasi_bulan);
+        Laporan_keuangan(navigasi_bulan, navigasi_tahun);
         menu =  false;
         break;
     case 12:
