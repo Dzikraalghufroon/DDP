@@ -30,6 +30,10 @@ void clearScreen();
 void header();
 void menu_rekapitulasi();
 void menu_bulan();
+void laporan_keuangan_header(long pemasukan_total,long pengeluaran_total,long saldo, long spending_average, int jumlah_pemasukan, int jumlah_pengeluaran);
+void laporan_keuangan_body(struct RekapPengeluaran *data, int jumlah);
+void laporan_keuangan_footer(char *kondisi, float sisa_dari_pemasukan);
+
 void realisasi_transaksi_table(struct Transaksi *data, int jumlah);
 void tambah_ukuran_array_transaksi(struct Transaksi **arr, int *kapasitas);
 
@@ -146,7 +150,7 @@ struct Transaksi *getPengeluaran(int *jumlah_out,int target_bulan){
     return data;
 }
 char *kondisi_keuangan(int saldo){
-    char static kondisi[9]; 
+    static char kondisi[9]; 
     if (saldo < 0) {
         strcpy(kondisi, "Defisit");
     }
@@ -160,7 +164,7 @@ char *kondisi_keuangan(int saldo){
 }
 
 long pemasukan_total(int *jumlah_data_out,int target_bulan){
-    int jumlah_data;
+    int jumlah_data =0;
     long total = 0;
     struct Transaksi *Pemasukan = getPemasukan(&jumlah_data, target_bulan);
     if (Pemasukan) {
@@ -171,12 +175,14 @@ long pemasukan_total(int *jumlah_data_out,int target_bulan){
         free(Pemasukan);
     }
 //jika butuh jumlah data maka diisi
-    *jumlah_data_out = jumlah_data;
+    if (jumlah_data_out != NULL) { 
+        *jumlah_data_out = jumlah_data;
+    }
     return total;
 }
 
 long pengeluaran_total(int *jumlah_data_out,int target_bulan){
-    int jumlah_data;
+    int jumlah_data = 0;
     long total = 0;
     struct Transaksi *Pengeluaran = getPengeluaran(&jumlah_data,target_bulan);
     if (Pengeluaran) {
@@ -187,8 +193,9 @@ long pengeluaran_total(int *jumlah_data_out,int target_bulan){
         free(Pengeluaran);
     }
 //jika butuh jumlah data maka diisi
-    *jumlah_data_out = jumlah_data;
-
+    if (jumlah_data_out != NULL) { 
+        *jumlah_data_out = jumlah_data;
+    }
     return total;
 }
 
@@ -202,12 +209,13 @@ int hitung_jumlah_transaksi_pengeluaran(){
     char line[150];
     char jenis[50];
 
-    while (sscanf(line, "%*49[^|]|%*49[^|]|%*49[^|]|%49[^|]|%*ld|%*49[^\n]",
-                   jenis) == 1) {
-            if (strcmp(jenis, "Pengeluaran") == 0) {
-                count++;
-            }
+    while (fgets(line, sizeof(line), readFile)) {
+    if (sscanf(line, "%*49[^|]|%*49[^|]|%*49[^|]|%49[^|]|%*ld|%*49[^\n]", jenis) == 1) {
+        if (strcmp(jenis, "Pengeluaran") == 0)
+            count++;
     }
+}
+
     fclose(readFile);
     return count;
 }
@@ -233,7 +241,38 @@ long kalkulasi_pengeluaran_rataRata(int target_bulan){
    return 0;
 }
 
-void menu_rekapitulasi(){
+float persentase_dari_sisa_total_pemasukan(long saldo, long pemasukan){
+    if (pemasukan == 0) {
+        return -1; //menandai bahwa error 
+    }
+    return ((float)saldo / (float)pemasukan) * 100.0f;
+}
+
+void Laporan_keuangan(int bulan){
+    int jumlah_transaksi_pemasukan;
+    int jumlah_transaksi_pengeluaran;
+    int jumlah_data_pemasukan;
+    int jumlah_data_pengeluaran;
+
+    long saldo_akhir = calculate_saldo(bulan);
+    long total_pemasukan = pemasukan_total(&jumlah_transaksi_pemasukan,bulan);
+    long total_pengeluaran = pengeluaran_total(&jumlah_transaksi_pengeluaran, bulan);
+    float persentase_dari_sisa_pemasukan = persentase_dari_sisa_total_pemasukan(saldo_akhir,total_pemasukan);
+
+    struct Transaksi *Pengeluaran = getPengeluaran(&jumlah_data_pengeluaran,bulan);
+    struct Transaksi *Pemasukan = getPemasukan(&jumlah_data_pemasukan, bulan);
+
+    char kondisi_keuangan_mahasiswa[10];
+    strcpy(kondisi_keuangan_mahasiswa, kondisi_keuangan( saldo_akhir));
+
+    laporan_keuangan_header(total_pemasukan, total_pengeluaran, saldo_akhir, kalkulasi_pengeluaran_rataRata(bulan),jumlah_transaksi_pemasukan,jumlah_transaksi_pengeluaran);
+
+    getchar();
+    free(Pengeluaran);
+    free(Pemasukan);
+}
+
+void menu_utama_rekapitulasi(){
     bool menu = true;
   int navigasi;
   while (menu) {
@@ -284,7 +323,7 @@ void menu_rekapitulasi(){
         // analisis_keuangan_controller_main(3);
         break;
     case 11:
-        // analisis_keuangan_controller_main(3);
+        Laporan_keuangan(navigasi);
         break;
     case 12:
         // analisis_keuangan_controller_main(3);

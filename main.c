@@ -9,6 +9,8 @@ void header();
 void menu_pos_anggaran();
 void menu_utama();
 void menu_transaksi();
+void menu_utama_rekapitulasi();
+
 int main(){
     int navigasi;
     bool menu = true;
@@ -39,7 +41,7 @@ int main(){
               menu_transaksi();
             break;
             case 3:
-            //  menu_analisis_controller();
+                menu_utama_rekapitulasi();
             break;
             default:
                 alert = true;

@@ -130,6 +130,52 @@ void menu_bulan(){
 }
 
 
+void laporan_keuangan_header(long pemasukan_total,long pengeluaran_total,long saldo, long spending_average, int jumlah_pemasukan, int jumlah_pengeluaran){
+    printf("|==================================LAPORAN KEUANGAN MAHASISWA======================================|\n");
+    printf("total pemasukan (%d Transaksi)                : %ld \n",jumlah_pemasukan, pemasukan_total);
+    printf("total pengeluaran (%d Transaksi)              : %ld \n",jumlah_pengeluaran, pengeluaran_total);
+    printf("Saldo Akhir                                   : %ld \n", saldo);
+    printf("Rata-rata pengeluaran                         : %ld \n", spending_average);
+    printf("\n|==================================================================================================|\n");
+}
+
+void laporan_keuangan_body(struct RekapPengeluaran *data, int jumlah) {
+    printf("POS ANGGARAN\n");
+    printf("Pos             | Batas (Rp)          | Realisasi         | Sisa (Rp)       | Jumlah transaksi | Status\n");
+    printf("-------------------------------------------------------------------------------------------------------------\n");
+
+    for (int i = 0; i < jumlah; i++) {
+        printf("%-15s | %-18.0Lf | %-16.0Lf | %-15.0Lf | %-17d | %-10s\n",
+            data[i].pos,
+            data[i].nominal,
+            data[i].realisasi,
+            data[i].sisa,
+            data[i].jumlah_transaksi,
+            data[i].status
+        );
+    }
+    printf("-------------------------------------------------------------------------------------------------------------\n");
+}
+
+void laporan_keuangan_footer(char *kondisi, float sisa_dari_pemasukan){
+    printf("Kondisi Keuangan   : %s (Sisa %f%% dari total pemasukan)\n",kondisi, sisa_dari_pemasukan);
+    printf("Kesimpulan         :   ");
+    if (sisa_dari_pemasukan > 25) {
+        printf("Anda termasuk mahasiswa hemat dan produktif.");
+    }
+    else if (sisa_dari_pemasukan >= 1 && sisa_dari_pemasukan <= 25) {
+        printf("Keuangan Anda seimbang, tetap waspada terhadap pengeluaran tidak perlu.");
+    }
+    else if (sisa_dari_pemasukan > (-10)) {
+        printf("Anda mulai boros, perhatikan pengeluaran harian.");
+    }
+    else {
+        printf("Kondisi keuangan kurang sehat. Kurangi pengeluaran dan cari tambahan pemasukan.");
+    }
+    printf("\n==============================================================================================================\n");
+    printf("Tekan Enter untuk selesai");
+}
+
 void realisasi_tabel_header() {
 
     printf("Riwayat transaksi anda\n");

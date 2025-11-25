@@ -76,7 +76,8 @@ void input_pos(char *pos){
         printf("Masukkan Pos Anggaran : ");
         fgets(pos, sizeof(pos), stdin);
         pos[strcspn(pos, "\n")] = '\0';
-
+        getchar();
+        // while (getchar() != '\n'); // membuang sisa input
         if (cekPos_anggaran(pos)) { // valid
             break;
         } else {

@@ -41,7 +41,7 @@ char *getTanggal() {
     time_t t = time(NULL);
     struct tm *now = localtime(&t);
 
-    sprintf(buffer, "%02d-%02d-%04d",
+    sprintf(buffer, "%02d/%02d/%04d",
             now->tm_mday,
             now->tm_mon + 1,
             now->tm_year + 1900);
