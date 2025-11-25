@@ -118,6 +118,16 @@ void menu_rekapitulasi(){
     printf("0. kembali");
 }
 
+void menu_tahun(int *tahun_array, int jumlah_tahun){
+    printf("\nPilih tahun yang ingin ditampilkan di laporan\n");
+    for (int i = 0; i < jumlah_tahun; i++) {
+        printf("%d. %d\n", i+1,tahun_array[i]);
+    }
+    printf("0. kembali");
+
+    printf("\n \tPilih tahun (0 - %d): ", jumlah_tahun);
+}
+
 void menu_bulan(){
     printf("\nPilih bulan yang ingin ditampilkan di laporan\n");
     printf("1. Januari \t 7. Juli\n");
@@ -130,8 +140,8 @@ void menu_bulan(){
 }
 
 
-void laporan_keuangan_header(long pemasukan_total,long pengeluaran_total,long saldo, long spending_average, int jumlah_pemasukan, int jumlah_pengeluaran){
-    printf("|==================================LAPORAN KEUANGAN MAHASISWA======================================|\n");
+void laporan_keuangan_header(long pemasukan_total,long pengeluaran_total,long saldo, long spending_average, int jumlah_pemasukan, int jumlah_pengeluaran, char *bulan){
+    printf("|================================LAPORAN KEUANGAN BULAN %s ==================================|\n", bulan);
     printf("total pemasukan (%d Transaksi)                : %ld \n",jumlah_pemasukan, pemasukan_total);
     printf("total pengeluaran (%d Transaksi)              : %ld \n",jumlah_pengeluaran, pengeluaran_total);
     printf("Saldo Akhir                                   : %ld \n", saldo);

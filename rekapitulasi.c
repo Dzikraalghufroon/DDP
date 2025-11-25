@@ -30,14 +30,46 @@ void clearScreen();
 void header();
 void menu_rekapitulasi();
 void menu_bulan();
-void laporan_keuangan_header(long pemasukan_total,long pengeluaran_total,long saldo, long spending_average, int jumlah_pemasukan, int jumlah_pengeluaran);
+void menu_tahun(int *tahun_array, int jumlah_tahun);
+void laporan_keuangan_header(long pemasukan_total,long pengeluaran_total,long saldo, long spending_average, int jumlah_pemasukan, int jumlah_pengeluaran, char *bulan);
 void laporan_keuangan_body(struct RekapPengeluaran *data, int jumlah);
 void laporan_keuangan_footer(char *kondisi, float sisa_dari_pemasukan);
 
 void realisasi_transaksi_table(struct Transaksi *data, int jumlah);
 void tambah_ukuran_array_transaksi(struct Transaksi **arr, int *kapasitas);
-
+void tambah_ukuran_array_integer(int **arr, int *kapasitas);
 void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas);
+
+char *nama_bulan(int bulan){
+    switch (bulan) {
+        case 1:
+            return "JANUARI";
+        case 2:
+            return "FEBRUARI";
+        case 3:
+            return "MARET";
+        case 4:
+            return "APRIL";
+        case 5:
+            return "MEI";
+        case 6:
+            return "JUNI";
+        case 7:
+            return "JULI";
+        case 8:
+            return "AGUSTUS";
+        case 9:
+            return "SEPTEMBER";
+        case 10:
+            return "OKTOBER";
+        case 11:
+            return "NOVEMBER";
+        case 12:
+            return "DESEMBER";
+        default:
+            return ""; 
+    }
+}
 
 int filter_bulan(char *tanggal){
     int d, m, y;
@@ -55,6 +87,66 @@ int filter_tahun(char *tanggal){
         return 0;
 }
 
+bool cek_tahun_sudah_ada(int *tahun_list, int jumlah, int tahun){
+    for (int i = 0; i < jumlah; i++) {
+            if (tahun_list[i] == tahun) {
+                return true;
+                break;
+            }
+        }
+    return false;
+}
+
+int *data_tahun_dari_transaksi(int *jumlah_tahun_out) {
+    int kapasitas = 10;
+    int *tahun_list = malloc(kapasitas * sizeof(int));
+    if (!tahun_list) {
+        printf("Gagal mengalokasikan memori untuk tahun_list!\n");
+        return NULL;
+    }
+
+    *jumlah_tahun_out = 0;
+
+    char line[200];
+    char tanggal[20];
+
+    FILE *readFile = fopen("data_transaksi.txt", "r");
+    if (!readFile) {
+        printf("File data_transaksi.txt tidak ditemukan!\n");
+        free(tahun_list);
+        return NULL;
+    }
+
+    while (fgets(line, sizeof(line), readFile)) {
+
+        // Ambil hanya tanggal dari file (pastikan format sesuai)
+        if (sscanf(line, "%*49[^|]|%19[^|]|%*49[^|]|%*49[^|]|%*ld|%*99[^\n]", 
+                   tanggal) != 1) {
+            continue;
+        }
+
+        int y = filter_tahun(tanggal); 
+        if (y == 0) continue; // invalid
+
+        // --- Cek apakah tahun y sudah ada dalam array ---
+        bool sudah_ada = cek_tahun_sudah_ada(tahun_list, *jumlah_tahun_out, y);
+        
+
+        if (!sudah_ada) {
+            // Jika array penuh resize
+            if (*jumlah_tahun_out == kapasitas) {
+                tambah_ukuran_array_integer(&tahun_list, &kapasitas);
+            }
+
+            tahun_list[*jumlah_tahun_out] = y;
+            (*jumlah_tahun_out)++;
+        }
+    }
+
+    fclose(readFile);
+
+    return tahun_list; // berisi array tahun unik
+}
 
 struct Transaksi *getPemasukan(int *jumlah_out, int target_bulan){
     int kapasitas = 10;
@@ -75,7 +167,7 @@ struct Transaksi *getPemasukan(int *jumlah_out, int target_bulan){
     }
     while (fgets(line, sizeof(line), readFile)) {
 
-        if (sscanf(line, "%49[^|]|%49[^|]|%49[^|]|%49[^|]|%ld|%49[^\n]",
+        if (sscanf(line, "%9[^|]|%19[^|]|%49[^|]|%19[^|]|%ld|%49[^\n]",
                    dataTransaksi.kode,
                    dataTransaksi.tanggal,
                    dataTransaksi.pos,
@@ -122,7 +214,7 @@ struct Transaksi *getPengeluaran(int *jumlah_out,int target_bulan){
     }
     while (fgets(line, sizeof(line), readFile)) {
 
-        if (sscanf(line, "%49[^|]|%49[^|]|%49[^|]|%49[^|]|%ld|%49[^\n]",
+        if (sscanf(line, "%9[^|]|%19[^|]|%49[^|]|%19[^|]|%ld|%49[^\n]",
                    dataTransaksi.kode,
                    dataTransaksi.tanggal,
                    dataTransaksi.pos,
@@ -210,7 +302,7 @@ int hitung_jumlah_transaksi_pengeluaran(){
     char jenis[50];
 
     while (fgets(line, sizeof(line), readFile)) {
-    if (sscanf(line, "%*49[^|]|%*49[^|]|%*49[^|]|%49[^|]|%*ld|%*49[^\n]", jenis) == 1) {
+    if (sscanf(line, "%*9[^|]|%*19[^|]|%*49[^|]|%19[^|]|%*ld|%*49[^\n]", jenis) == 1) {
         if (strcmp(jenis, "Pengeluaran") == 0)
             count++;
     }
@@ -265,7 +357,9 @@ void Laporan_keuangan(int bulan){
     char kondisi_keuangan_mahasiswa[10];
     strcpy(kondisi_keuangan_mahasiswa, kondisi_keuangan( saldo_akhir));
 
-    laporan_keuangan_header(total_pemasukan, total_pengeluaran, saldo_akhir, kalkulasi_pengeluaran_rataRata(bulan),jumlah_transaksi_pemasukan,jumlah_transaksi_pengeluaran);
+    clearScreen();
+    header();
+    laporan_keuangan_header(total_pemasukan, total_pengeluaran, saldo_akhir, kalkulasi_pengeluaran_rataRata(bulan),jumlah_transaksi_pemasukan,jumlah_transaksi_pengeluaran,nama_bulan(bulan));
 
     getchar();
     free(Pengeluaran);
@@ -274,17 +368,28 @@ void Laporan_keuangan(int bulan){
 
 void menu_utama_rekapitulasi(){
     bool menu = true;
-  int navigasi;
+  int navigasi_bulan;
+  int navigasi_tahun;
+  int jumlah_tahun;
+    int *tahun_array = data_tahun_dari_transaksi(&jumlah_tahun);
+    
   while (menu) {
     clearScreen();
     header();
-    menu_bulan();
-    printf("\n \tPilih menu (0-12): ");
 
-    scanf("%d", &navigasi);
+    menu_tahun(tahun_array, jumlah_tahun);
+    scanf("%d", &navigasi_tahun);
     getchar();
 
-    switch (navigasi) {
+    free(tahun_array);
+
+    menu_bulan();
+    printf("\n \tPilih bulan (0-12): ");
+
+    scanf("%d", &navigasi_bulan);
+    getchar();
+
+    switch (navigasi_bulan) {
     case 0:
         menu = false;
         break;
@@ -323,7 +428,8 @@ void menu_utama_rekapitulasi(){
         // analisis_keuangan_controller_main(3);
         break;
     case 11:
-        Laporan_keuangan(navigasi);
+        Laporan_keuangan(navigasi_bulan);
+        menu =  false;
         break;
     case 12:
         // analisis_keuangan_controller_main(3);

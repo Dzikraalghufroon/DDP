@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 struct PosAnggaran {
   char pos[50];
@@ -102,3 +103,27 @@ void tambah_ukuran_array_transaksi(struct Transaksi **arr, int *kapasitas){
     *kapasitas = kapasitas_baru;
 }
 
+void tambah_ukuran_array_integer(int **arr, int *kapasitas){
+    int kapasitas_baru = (*kapasitas) * 2;
+
+    int *temp = realloc(*arr, kapasitas_baru * sizeof(int));
+
+    if(!temp){
+        free(*arr);
+        *arr = NULL;
+        return;
+    }
+    *arr = temp;
+    *kapasitas = kapasitas_baru;
+}
+
+void trim(char *s) {
+    // trim leading
+    char *p = s;
+    while (isspace((unsigned char)*p)) p++;
+    if (p != s) memmove(s, p, strlen(p)+1);
+
+    // trim trailing
+    size_t len = strlen(s);
+    while (len > 0 && isspace((unsigned char)s[len-1])) s[--len] = '\0';
+}
