@@ -10,6 +10,7 @@ void menu_pos_anggaran();
 void menu_utama();
 void menu_transaksi();
 void menu_utama_rekapitulasi();
+void menu_riwayat_transaksi();
 
 int main(){
     int navigasi;
@@ -22,7 +23,7 @@ int main(){
         menu_utama();
 
         if (alert) {
-            printf("\nMohon Pilih menu hanya (0-3): ");
+            printf("\n\tMohon Pilih menu hanya (0-3): ");
         }
         alert = false;
         // perulangan untuk navigasi 
@@ -42,6 +43,10 @@ int main(){
             break;
             case 3:
                 menu_utama_rekapitulasi();
+            break;
+
+            case 4:
+                menu_riwayat_transaksi();
             break;
             default:
                 alert = true;

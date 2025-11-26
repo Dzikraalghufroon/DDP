@@ -4,7 +4,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Icontroller -Imodel -Iview -Iutils
 
 SRC = \
-    main.c posAnggaran.c ui.c utils.c transaksi.c rekapitulasi.c
+    main.c posAnggaran.c ui.c utils.c transaksi.c rekapitulasi.c riwayat_transaksi.c
 
 OBJ = $(SRC:.c=.o)
 
