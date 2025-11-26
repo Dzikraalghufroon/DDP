@@ -434,10 +434,35 @@ void Laporan_keuangan(int bulan, int tahun){
     laporan_keuangan_header(total_pemasukan, total_pengeluaran, saldo_akhir, kalkulasi_pengeluaran_rataRata(bulan,tahun),jumlah_transaksi_pemasukan,jumlah_transaksi_pengeluaran,nama_bulan(bulan), tahun);
 
     laporan_keuangan_body(rekapPengeluaran, jumlah_data_rekap_pengeluaran);
+
+    laporan_keuangan_footer(kondisi_keuangan_mahasiswa, persentase_dari_sisa_pemasukan);  
     getchar();
     free(Pengeluaran);
     free(Pemasukan);
     free(rekapPengeluaran);
+}
+
+void input_tahun(int *navigasi_tahun){
+    int jumlah_tahun;
+    int *tahun_array = data_tahun_dari_transaksi(&jumlah_tahun);
+    bool valid = false;
+    bool find =false;
+    while (!valid) {
+        scanf("%d", navigasi_tahun);
+        getchar();
+        for (int i = 0; i < jumlah_tahun; i++) {
+            if (*navigasi_tahun == tahun_array[i]) {
+                valid = true;
+                find = true;
+                break;
+            }
+        }
+        if (!find) {
+            printf("\ntahun yang anda input tidak valid/tidak ditemukan");
+            printf("\n \tPilih tahun (contoh :2020): ");
+        }
+    }
+    free(tahun_array);
 }
 
 void menu_utama_rekapitulasi(){
@@ -452,8 +477,7 @@ void menu_utama_rekapitulasi(){
     header();
 
     menu_tahun(tahun_array, jumlah_tahun);
-    scanf("%d", &navigasi_tahun);
-    getchar();
+    input_tahun(&navigasi_tahun);
 
     free(tahun_array);
 
@@ -469,44 +493,55 @@ void menu_utama_rekapitulasi(){
         break;
 
     case 1:
-        // analisis_keuangan_controller_main(1);
+        Laporan_keuangan(navigasi_bulan, navigasi_tahun);
+        menu =  false;
         break;
 
     case 2:
-        // analisis_keuangan_controller_main(2);
+        Laporan_keuangan(navigasi_bulan, navigasi_tahun);
+        menu =  false;
         break;
 
     case 3:
-        // analisis_keuangan_controller_main(3);
+        Laporan_keuangan(navigasi_bulan, navigasi_tahun);
+        menu =  false;
         break;
 
     case 4:
-        // analisis_keuangan_controller_main(3);
+        Laporan_keuangan(navigasi_bulan, navigasi_tahun);
+        menu =  false;
         break;
     case 5:
-        // analisis_keuangan_controller_main(3);
+        Laporan_keuangan(navigasi_bulan, navigasi_tahun);
+        menu =  false;
         break;
     case 6:
-        // analisis_keuangan_controller_main(3);
+        Laporan_keuangan(navigasi_bulan, navigasi_tahun);
+        menu =  false;
         break;
     case 7:
-        // analisis_keuangan_controller_main(3);
+        Laporan_keuangan(navigasi_bulan, navigasi_tahun);
+        menu =  false;
         break;
     case 8:
-        // analisis_keuangan_controller_main(3);
+        Laporan_keuangan(navigasi_bulan, navigasi_tahun);
+        menu =  false;
         break;
     case 9:
-        // analisis_keuangan_controller_main(3);
+        Laporan_keuangan(navigasi_bulan, navigasi_tahun);
+        menu =  false;
         break;
     case 10:
-        // analisis_keuangan_controller_main(3);
+        Laporan_keuangan(navigasi_bulan, navigasi_tahun);
+        menu =  false;
         break;
     case 11:
         Laporan_keuangan(navigasi_bulan, navigasi_tahun);
         menu =  false;
         break;
     case 12:
-        // analisis_keuangan_controller_main(3);
+        Laporan_keuangan(navigasi_bulan, navigasi_tahun);
+        menu =  false;
         break;
     default:
         printf("Mohon Pilih menu hanya (0-3)\n");
