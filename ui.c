@@ -219,3 +219,11 @@ void realisasi_transaksi_table(struct Transaksi *data, int jumlah) {
 
     realisasi_tabel_footer();
 }
+
+void tampilan_menu_riwayat_transaksi(){
+    printf("\nPilih Opsi untuk menampilkan transaksi\n");
+    printf("1. Pemasukan dan Transaksi\n");
+    printf("2. Hanya Pemasukan\n");
+    printf("3. Hanya Pengeluaran\n");
+    printf("0. kembali");
+}
