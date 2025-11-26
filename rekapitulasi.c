@@ -31,7 +31,7 @@ void header();
 void menu_rekapitulasi();
 void menu_bulan();
 void menu_tahun(int *tahun_array, int jumlah_tahun);
-void laporan_keuangan_header(long pemasukan_total,long pengeluaran_total,long saldo, long spending_average, int jumlah_pemasukan, int jumlah_pengeluaran, char *bulan);
+void laporan_keuangan_header(long pemasukan_total,long pengeluaran_total,long saldo, long spending_average, int jumlah_pemasukan, int jumlah_pengeluaran, char *bulan, int tahun);
 void laporan_keuangan_body(struct RekapPengeluaran *data, int jumlah);
 void laporan_keuangan_footer(char *kondisi, float sisa_dari_pemasukan);
 
@@ -342,11 +342,80 @@ float persentase_dari_sisa_total_pemasukan(long saldo, long pemasukan){
     return ((float)saldo / (float)pemasukan) * 100.0f;
 }
 
+long get_nominal_pos(char *pos){
+    char nama[50];
+    long nominal;
+
+    FILE *readFile = fopen("pos_anggaran.txt", "r");
+    if (!readFile) {
+        printf("File pos_anggaran.txt tidak ditemukan!\n");
+        return 0;
+    }
+
+    while (fscanf(readFile, "%49[^|]|%ld\n", nama, &nominal) == 2) {
+        if (strcmp(nama, pos) == 0) {
+            fclose(readFile);
+            return nominal;  
+        }
+    }
+
+    fclose(readFile);
+    return 0;
+}
+
+struct RekapPengeluaran *rekap_pengeluaran(int target_bulan, int target_tahun, int *count){
+    int jumlah_data = 0;
+    *count = 0;
+
+    struct Transaksi *Pengeluaran = getPengeluaran(&jumlah_data, target_bulan, target_tahun);
+    if (!Pengeluaran) return NULL;
+
+    struct RekapPengeluaran *temp = malloc(jumlah_data * sizeof(struct RekapPengeluaran));
+    struct RekapPengeluaran *result = malloc(jumlah_data * sizeof(struct RekapPengeluaran));
+
+    for (int i = 0; i < jumlah_data; i++) {
+        strcpy(temp[i].pos, Pengeluaran[i].pos);
+        temp[i].nominal = get_nominal_pos(Pengeluaran[i].pos);
+        temp[i].realisasi = Pengeluaran[i].nominal;
+        temp[i].jumlah_transaksi = 1;
+        temp[i].sisa = 0;
+    }
+
+    for (int i = 0; i < jumlah_data; i++) {
+        bool found = false;
+        for (int j = 0; j < *count; j++) {
+            if (strcmp(result[j].pos, temp[i].pos) == 0) {
+                result[j].realisasi += temp[i].realisasi;
+                result[j].jumlah_transaksi += 1;
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            result[*count] = temp[i];
+            (*count)++;
+        }
+    }
+
+    for (int i = 0; i < *count; i++) {
+        result[i].sisa = result[i].nominal - result[i].realisasi;
+        if (result[i].sisa > 0)
+            strcpy(result[i].status, "aman");
+        else
+            strcpy(result[i].status, "tidak aman");
+    }
+
+    free(Pengeluaran);
+    free(temp);
+    return result;
+}
+
 void Laporan_keuangan(int bulan, int tahun){
     int jumlah_transaksi_pemasukan;
     int jumlah_transaksi_pengeluaran;
     int jumlah_data_pemasukan;
     int jumlah_data_pengeluaran;
+    int jumlah_data_rekap_pengeluaran;
 
     long saldo_akhir = calculate_saldo(bulan,tahun);
     long total_pemasukan = pemasukan_total(&jumlah_transaksi_pemasukan,bulan, tahun);
@@ -356,16 +425,19 @@ void Laporan_keuangan(int bulan, int tahun){
     struct Transaksi *Pengeluaran = getPengeluaran(&jumlah_data_pengeluaran,bulan,tahun);
     struct Transaksi *Pemasukan = getPemasukan(&jumlah_data_pemasukan, bulan,tahun);
 
+    struct RekapPengeluaran *rekapPengeluaran = rekap_pengeluaran(bulan, tahun, &jumlah_data_rekap_pengeluaran);
     char kondisi_keuangan_mahasiswa[10];
     strcpy(kondisi_keuangan_mahasiswa, kondisi_keuangan( saldo_akhir));
 
     clearScreen();
     header();
-    laporan_keuangan_header(total_pemasukan, total_pengeluaran, saldo_akhir, kalkulasi_pengeluaran_rataRata(bulan,tahun),jumlah_transaksi_pemasukan,jumlah_transaksi_pengeluaran,nama_bulan(bulan));
+    laporan_keuangan_header(total_pemasukan, total_pengeluaran, saldo_akhir, kalkulasi_pengeluaran_rataRata(bulan,tahun),jumlah_transaksi_pemasukan,jumlah_transaksi_pengeluaran,nama_bulan(bulan), tahun);
 
+    laporan_keuangan_body(rekapPengeluaran, jumlah_data_rekap_pengeluaran);
     getchar();
     free(Pengeluaran);
     free(Pemasukan);
+    free(rekapPengeluaran);
 }
 
 void menu_utama_rekapitulasi(){

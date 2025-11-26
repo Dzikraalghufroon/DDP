@@ -9,16 +9,16 @@ struct Transaksi {
     char kode[10];
     char jenis[20];
     char pos[50];
-    long double nominal;
+    long nominal;
     char tanggal[20];
     char keterangan[50];
 };
 
 struct RekapPengeluaran{
   char pos[50];
-  long double nominal;
-  long double realisasi;
-  long double sisa;
+  long nominal;
+  long realisasi;
+  long sisa;
   int jumlah_transaksi;
   char status[10];
 };
@@ -43,9 +43,10 @@ void menu_utama(){
     printf("     1. Pencatatan Pos Anggaran\n");
     printf("     2. Pencatatan Transaksi\n");
     printf("     3. Tampilkan laporan keuangan\n");
+    printf("     4. Riwayat Transaksi\n");
     printf("     0. Keluar\n");
     printf("==================================================================");
-    printf("\n \tPilih menu (0-3): ");
+    printf("\n \tPilih menu (0-4): ");
 }
 
 
@@ -140,8 +141,8 @@ void menu_bulan(){
 }
 
 
-void laporan_keuangan_header(long pemasukan_total,long pengeluaran_total,long saldo, long spending_average, int jumlah_pemasukan, int jumlah_pengeluaran, char *bulan){
-    printf("|================================LAPORAN KEUANGAN BULAN %s ==================================|\n", bulan);
+void laporan_keuangan_header(long pemasukan_total,long pengeluaran_total,long saldo, long spending_average, int jumlah_pemasukan, int jumlah_pengeluaran, char *bulan, int tahun){
+    printf("|================================LAPORAN KEUANGAN BULAN %s %d ==================================|\n", bulan, tahun);
     printf("total pemasukan (%d Transaksi)                : %ld \n",jumlah_pemasukan, pemasukan_total);
     printf("total pengeluaran (%d Transaksi)              : %ld \n",jumlah_pengeluaran, pengeluaran_total);
     printf("Saldo Akhir                                   : %ld \n", saldo);
@@ -155,7 +156,7 @@ void laporan_keuangan_body(struct RekapPengeluaran *data, int jumlah) {
     printf("-------------------------------------------------------------------------------------------------------------\n");
 
     for (int i = 0; i < jumlah; i++) {
-        printf("%-15s | %-18.0Lf | %-16.0Lf | %-15.0Lf | %-17d | %-10s\n",
+        printf("%-15s | %-18.0ld | %-16.0ld | %-15.0ld | %-17d | %-10s\n",
             data[i].pos,
             data[i].nominal,
             data[i].realisasi,
@@ -195,7 +196,7 @@ void realisasi_tabel_header() {
     printf("-----------------------------------------------------------------------------------------------------------------------------\n");
 }
 void realisasi_tabel_row(struct Transaksi *t) {
-    printf("| %-10s | %-12s | %-15s | %-10s | %-15.2Lf | %-30s |\n",
+    printf("| %-10s | %-12s | %-15s | %-10s | %-15.2ld | %-30s |\n",
            t->kode,
            t->tanggal,
            t->pos,
