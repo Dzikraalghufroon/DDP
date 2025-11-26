@@ -327,17 +327,29 @@ bool pengeluaran_rataRata(long params){
     }
     return false;    
 }
+
 long kalkulasi_pengeluaran_rataRata(int target_bulan, int target_tahun){
-    long saldo= calculate_saldo(target_bulan,target_tahun);
-   if (pengeluaran_rataRata(saldo)) {
-    return pengeluaran_total(NULL,target_bulan,target_tahun)/hitung_jumlah_transaksi_pengeluaran();
-   } 
-   return 0;
+    long saldo = calculate_saldo(target_bulan, target_tahun);
+
+    if (!pengeluaran_rataRata(saldo)) {
+        return 0;
+    }
+
+    long total_pengeluaran = pengeluaran_total(NULL, target_bulan, target_tahun);
+    int jumlah_transaksi = hitung_jumlah_transaksi_pengeluaran(); // existing: seluruh file
+
+    if (jumlah_transaksi <= 0) {
+        // Hindari pembagian dengan nol
+        return 0;
+    }
+
+    return total_pengeluaran / jumlah_transaksi;
 }
+
 
 float persentase_dari_sisa_total_pemasukan(long saldo, long pemasukan){
     if (pemasukan == 0) {
-        return -1; //menandai bahwa error 
+        return 0; //menandai bahwa error 
     }
     return ((float)saldo / (float)pemasukan) * 100.0f;
 }

@@ -23,19 +23,40 @@ struct RekapPengeluaran{
   char status[10];
 };
 
+/* =======================================================
+        MODUL : ClearScreen()
+        DESKRIPSI : Mengosongkan layar
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
+
 void clearScreen() {
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
+#ifdef _WIN32           //jika menggunakan windos
+    system("cls");       // mengosongkan layar
+#else                   // jika menggunaka selain windos
+    system("clear");    // mengosongkan layar
 #endif
 }
+
+/* =======================================================
+        MODUL : header
+        DESKRIPSI : menampilkan tampilan header aplikasi
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
+
 void header() {
     printf("|==================================================================================================|\n");
     printf("|                                 APLIKASI KEUANGAN MAHASISWA                                      |\n");
     printf("|==================================================================================================|\n");
 }
 
+/* =======================================================
+        MODUL : menu_utama
+        DESKRIPSI : menampilkan daftar fitur-fitur utama yang ada di aplikasi
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
 
 void menu_utama(){
     printf("=========================== MENU UTAMA ===========================");
@@ -50,6 +71,13 @@ void menu_utama(){
 }
 
 
+/* =======================================================
+        MODUL : menu_pos_anggaran_view
+        DESKRIPSI : menampilkan fitur-fitur yang tersedia di bagian pencatatan pos anggaran 
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
+
 void menu_pos_anggaran_view(){
     printf("======================= MENU POS ANGGARAN =======================");
     printf(" \n");
@@ -61,11 +89,25 @@ void menu_pos_anggaran_view(){
     printf("\n \tPilih menu (0-3): ");
 }
 
+/* =======================================================
+        MODUL : konfirmasi_penambahan_pos
+        DESKRIPSI : menampilkan konirmasi kepada user apakah masih ingin menambah pos anggaran atau tidak
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
+
 void konfirmasi_penambahan_pos(){
     printf("\tApakah anda masih ingin menambah pos anggaran? \n");
         printf("\tmasukkan (y) untuk tetap menambah \n\tmasukkan (n) jika "
               "selesai \n=");
 }
+
+/* =======================================================
+        MODUL : daftar_pos_anggaran_view
+        DESKRIPSI : menampilkan table dari pos anggaran yang tersedia di file pos_anggaran.txt
+        INITIAL STATE : data pos anggaran untuk ditampilkan masih kosong
+        FINAL STATE : seluruh pos anggaran yang ada ditampilkan ke layar
+   =======================================================*/
 
 void daftar_pos_anggaran_view(struct PosAnggaran arr[], int jumlah){
     printf("+------+--------------------------------+------------------+\n");
@@ -78,11 +120,27 @@ void daftar_pos_anggaran_view(struct PosAnggaran arr[], int jumlah){
 
 }
 
+
+/* =======================================================
+        MODUL : masukkan_nominal
+        DESKRIPSI : meminta user untuk menginput nominal untuk disimpan
+        INITIAL STATE : variabel nominal masih belum memiliki nila
+        FINAL STATE : variabel nominal memiliki nilai
+   =======================================================*/
+
 void masukkan_nominal(long *nominal){
     printf("Masukkan nominal: ");
     scanf("%ld", nominal);
     getchar();
 }
+
+
+/* =======================================================
+        MODUL : footer line
+        DESKRIPSI : menampilkan garis panjang yang berfungsi sebagai footer
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
 
 void footer_line(){
     printf("==================================================================="
@@ -90,6 +148,13 @@ void footer_line(){
             "===========\n");
 }
 
+
+/* =======================================================
+        MODUL : menu_transaksi_view
+        DESKRIPSI : menampilkan pilihan untuk user untuk memilih jenis transaksi, apakah pemasukan atau pengeluaran
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
 
 void menu_transaksi_view(){
     printf(
@@ -103,6 +168,14 @@ void menu_transaksi_view(){
         printf("\n \tPilih menu (0-2): ");
 }
 
+
+/* =======================================================
+        MODUL : input_pemasukan_view
+        DESKRIPSI : menampilkan kelayar perintah kepada user, saat ingin menginput pemasukan
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
+
 void input_pemasukan_view(){
 
         printf("\n#____________________________________________Pemasukan____________________________________________#\n");
@@ -110,6 +183,14 @@ void input_pemasukan_view(){
         printf("+-Pemasukan harus bilangan positif ( >0 )-+\n");
         printf("\n#_________________________________________________________________________________________________#\n");
 }
+
+/* =======================================================
+        MODUL : menu_rekapitulasi
+        DESKRIPSI : meminta user untuk memilih opsi dalam menampilkan riwayat transaksi apakah hanya pengeluaran
+                    atau hanya pemasukan atau keduanya
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
 
 void menu_rekapitulasi(){
     printf("\nPilih Opsi untuk menampilkan transaksi\n");
@@ -119,16 +200,31 @@ void menu_rekapitulasi(){
     printf("0. kembali");
 }
 
+/* =======================================================
+        MODUL : menu_tahun
+        DESKRIPSI : menampilkan tahun yang tercatat dalam transaksi meminta user untuk 
+                    meminta tahun berapa yang akan dilakukan untuk rekapitulasi keuangan
+        INITIAL STATE : 
+        FINAL STATE :
+   =======================================================*/
+
 void menu_tahun(int *tahun_array, int jumlah_tahun){
     printf("\nPilih tahun yang ingin ditampilkan di laporan\n");
     for (int i = 0; i < jumlah_tahun; i++) {
-        printf("\t%d\n", tahun_array[i]);
+        printf("\t-%d\n", tahun_array[i]);
     }
     printf("\n__________________________________________________________________________________________________________________\n");
     printf("\t0. kembali");
 
     printf("\n \tPilih tahun (contoh :2020): ");
 }
+
+/* =======================================================
+        MODUL : menu_bulan
+        DESKRIPSI : menampilkan bulan yang akan ditampilkan dalam rekapitulasi keuangan
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
 
 void menu_bulan(){
     printf("\nPilih bulan yang ingin ditampilkan di laporan\n");
@@ -141,6 +237,15 @@ void menu_bulan(){
     printf("0. kembali");
 }
 
+/* =======================================================
+        MODUL : laporan_keuangan_header
+        DESKRIPSI : menampilkan info dari rekapitulasi keuangan ke layar
+        INITIAL STATE : variabel pemasukan_total pengeluaran_total saldo,
+                     spending_average, jumlah_pemasukan, jumlah_pengeluaran, bulan, tahun masih kosong
+        FINAL STATE : variabel pemasukan_total pengeluaran_total saldo,
+                     spending_average, jumlah_pemasukan, jumlah_pengeluaran, bulan, 
+                     tahun sudah memiliki nilai dan menampilkan kelayar 
+   =======================================================*/
 
 void laporan_keuangan_header(long pemasukan_total,long pengeluaran_total,long saldo, long spending_average, int jumlah_pemasukan, int jumlah_pengeluaran, char *bulan, int tahun){
     printf("|================================LAPORAN KEUANGAN BULAN %s %d ==================================|\n", bulan, tahun);
@@ -150,6 +255,13 @@ void laporan_keuangan_header(long pemasukan_total,long pengeluaran_total,long sa
     printf("Rata-rata pengeluaran                         : %ld \n", spending_average);
     printf("\n|==================================================================================================|\n");
 }
+
+/* =======================================================
+        MODUL : laporan_keuangan_body
+        DESKRIPSI : menampilkan table laporan keuangan kelayar 
+        INITIAL STATE : pos, batas, realisasi, sisa, jumlah transaksi, dan status masih kosong
+        FINAL STATE : pos, batas, realisasi, sisa, jumlah transaksi, dan status sudah memiliki nilai dan ditampilkan kelayar sebagai nilai masing masing kolom
+   =======================================================*/
 
 void laporan_keuangan_body(struct RekapPengeluaran *data, int jumlah) {
     printf("POS ANGGARAN\n");
@@ -168,6 +280,13 @@ void laporan_keuangan_body(struct RekapPengeluaran *data, int jumlah) {
     }
     printf("-------------------------------------------------------------------------------------------------------------\n");
 }
+
+/* =======================================================
+        MODUL : laporan_keuangan_footer
+        DESKRIPSI : menampilkan kondisi keuangan dan kesimpulan mengenai kondisi keuangan dari user 
+        INITIAL STATE : kondisi keuangan dan kesimpulan masih NULL
+        FINAL STATE : kondisi keuangan dan kesimpulan sudah memiliki nilai dan ditampilkan kelayar
+   =======================================================*/
 
 void laporan_keuangan_footer(char *kondisi, float sisa_dari_pemasukan){
     printf("Kondisi Keuangan   : %s (Sisa %f%% dari total pemasukan)\n",kondisi, sisa_dari_pemasukan);
@@ -188,6 +307,13 @@ void laporan_keuangan_footer(char *kondisi, float sisa_dari_pemasukan){
     printf("Tekan Enter untuk selesai");
 }
 
+/* =======================================================
+        MODUL : realisasi_tabel_header
+        DESKRIPSI : menampilkan header dari table yang akan menampilkan riwayat transaksi
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
+
 void realisasi_tabel_header() {
 
     printf("Riwayat transaksi anda\n");
@@ -196,6 +322,14 @@ void realisasi_tabel_header() {
            "ID", "Tanggal", "Pos Anggaran", "Jenis", "Nominal (Rp)", "Deskripsi");
     printf("-----------------------------------------------------------------------------------------------------------------------------\n");
 }
+
+/* =======================================================
+        MODUL : realisasi_tabel_row
+        DESKRIPSI : menampilkan nilai dari masing-masing kolom tabel riwayat transaksi
+        INITIAL STATE : nilai masing-masing kolom masih kosong
+        FINAL STATE : nilai masing-masing kolom sudah berisi dan ditampilkan kelayar
+   =======================================================*/
+
 void realisasi_tabel_row(struct Transaksi *t) {
     printf("| %-10s | %-12s | %-15s | %-14s | %-15.2ld | %-30s |\n",
            t->kode,
@@ -206,10 +340,25 @@ void realisasi_tabel_row(struct Transaksi *t) {
            t->keterangan);
 }
 
+/* =======================================================
+        MODUL : realisasi_tabel_footer
+        DESKRIPSI : menampilkan footer dari table daftar riwayat transaksi
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
+
 void realisasi_tabel_footer() {
     printf("-----------------------------------------------------------------------------------------------------------------------------\n");
     printf("Tekan Enter untuk selesai.....");
 }
+
+/* =======================================================
+        MODUL : realisasi_transaksi_table
+        DESKRIPSI : memanggil modul realisasi_tabel_header, realisasi_tabel_row, dan realisasi_tabel_footer
+                    untuk disatukan dan ditampilkan kelayar
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
 
 void realisasi_transaksi_table(struct Transaksi *data, int jumlah) {
     clearScreen();
@@ -221,6 +370,14 @@ void realisasi_transaksi_table(struct Transaksi *data, int jumlah) {
 
     realisasi_tabel_footer();
 }
+
+/* =======================================================
+        MODUL : tampilan_menu_riwayat_transaksi
+        DESKRIPSI : meminta user untuk memilih opsi dalam menampilkan riwayat transaksi apakah hanya pengeluaran
+                    atau hanya pemasukan atau keduanya
+        INITIAL STATE :
+        FINAL STATE :
+   =======================================================*/
 
 void tampilan_menu_riwayat_transaksi(){
     printf("\n=========================== MENU RIWAYAT TRANSAKSI ===========================");
