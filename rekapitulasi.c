@@ -41,10 +41,10 @@ void tambah_ukuran_array_integer(int **arr, int *kapasitas);
 void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas);
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : nama_bulan
+        DESKRIPSI : mengembalikan nama bulan berdasarkan paramater yang diinput
+        INPUT : int bulan
+        OUTPUT : return char yang berisi nama bulan
    =======================================================*/
 
 char *nama_bulan(int bulan){
@@ -79,10 +79,10 @@ char *nama_bulan(int bulan){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : filter_bulan
+        DESKRIPSI : modul yang berfungsi memisah bagian bulan dari string tanggal
+        INPUT : string tanggal
+        OUTPUT : return  int dari bulan
    =======================================================*/
 
 int filter_bulan(char *tanggal){
@@ -94,10 +94,10 @@ int filter_bulan(char *tanggal){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : filter_tahun
+        DESKRIPSI : modul yang berfungsi memisah bagian tahun dari string tanggal
+        INPUT : string tanggal
+        OUTPUT : return  int dari tahun
    =======================================================*/
 
 int filter_tahun(char *tanggal){
@@ -109,10 +109,11 @@ int filter_tahun(char *tanggal){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : cek_tahun_sudah_ada
+        DESKRIPSI : modul yang memfilter apakah ada data di array 
+                    yang berisi tahun sama dengan data lainnya di index yang berbeda
+        INPUT : array integer tahun, int jumlah data di array, int tahun
+        OUTPUT : boolean true atau false
    =======================================================*/
 
 bool cek_tahun_sudah_ada(int *tahun_list, int jumlah, int tahun){
@@ -126,10 +127,10 @@ bool cek_tahun_sudah_ada(int *tahun_list, int jumlah, int tahun){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : data_tahun_dari_transaksi
+        DESKRIPSI : modul yang mengambil data tahun apa saja yang ada di data riwayat_transaksi.txt
+        INPUT : integer jumlah_tahun_out
+        OUTPUT : array integer yang berisi tahun-tahun yang ada di file riwayat_transaksi.txt
    =======================================================*/
 
 int *data_tahun_dari_transaksi(int *jumlah_tahun_out) {
@@ -183,11 +184,12 @@ int *data_tahun_dari_transaksi(int *jumlah_tahun_out) {
     return tahun_list; // berisi array tahun unik
 }
 
+
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : getPemasukan
+        DESKRIPSI : modul yang mengambil data transaksi dengan jenis pemasukan dari file_riwayat.txt
+        INPUT :integer jumlah_out, int target_bulan, integer target_tahun
+        OUTPUT : array yang berisi data transaksi pemasukan
    =======================================================*/
 
 struct Transaksi *getPemasukan(int *jumlah_out, int target_bulan, int target_tahun){
@@ -240,10 +242,10 @@ struct Transaksi *getPemasukan(int *jumlah_out, int target_bulan, int target_tah
 
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : getPengeluaran
+        DESKRIPSI : modul yang mengambil data transaksi dengan jenis Pengeluaran dari file_riwayat.txt
+        INPUT :integer jumlah_out, int target_bulan, integer target_tahun
+        OUTPUT : array yang berisi data transaksi Pengeluaran
    =======================================================*/
 
 struct Transaksi *getPengeluaran(int *jumlah_out,int target_bulan, int target_tahun){
@@ -295,10 +297,10 @@ struct Transaksi *getPengeluaran(int *jumlah_out,int target_bulan, int target_ta
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : kondisis_keuangan
+        DESKRIPSI : modul yang menganalisis kondisi keuangan dari user berdasarkan parameter saldo
+        INPUT : integer saldo
+        OUTPUT : string yang berisi kondisi dari keuangan user
    =======================================================*/
 
 char *kondisi_keuangan(int saldo){
@@ -316,10 +318,10 @@ char *kondisi_keuangan(int saldo){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : pemasukan_total
+        DESKRIPSI : modul yang menjumlahkan nilai dari seluruh nominal transaksi total dengan jenis pemasukan
+        INPUT : integer jumlah_data_out, integer target_bulan, integer target_tahun
+        OUTPUT : total dari nilai nominal transaksi dengan jenis pemasukan
    =======================================================*/
 
 
@@ -343,12 +345,12 @@ long pemasukan_total(int *jumlah_data_out,int target_bulan, int target_tahun){
 
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : pengeluaran_total
+        DESKRIPSI : modul yang menjumlahkan nilai dari seluruh nominal transaksi total dengan jenis pengeluaran
+        INPUT : integer jumlah_data_out, integer target_bulan, integer target_tahun
+        OUTPUT : total dari nilai nominal transaksi dengan jenis pengeluaran
    =======================================================*/
-
+   
 long pengeluaran_total(int *jumlah_data_out,int target_bulan, int target_tahun){
     int jumlah_data = 0;
     long total = 0;
@@ -369,10 +371,10 @@ long pengeluaran_total(int *jumlah_data_out,int target_bulan, int target_tahun){
 
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : hitung_jumlah_transaksi_pengeluaran
+        DESKRIPSI : menghitung ada berapa banyak transaksi dengan jenis pengeluaran
+        INPUT : -
+        OUTPUT : integer jumlah data
    =======================================================*/
 
 int hitung_jumlah_transaksi_pengeluaran(){
@@ -398,10 +400,10 @@ int hitung_jumlah_transaksi_pengeluaran(){
 
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : calculate_saldo
+        DESKRIPSI : menghitung saldo dengan formula total pemasukan - total pengeluaran
+        INPUT : integer target_bulan, integer target_tahun
+        OUTPUT : nilai saldo
    =======================================================*/
 
 long calculate_saldo(int target_bulan, int target_tahun) {
@@ -412,10 +414,10 @@ long calculate_saldo(int target_bulan, int target_tahun) {
 
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : pengeluaran_rataRata
+        DESKRIPSI : modul yang memeriksa apakah pengeluaran ada atau tidak didalam transaksi
+        INPUT : long params
+        OUTPUT : boolean true atau false
    =======================================================*/
 
 bool pengeluaran_rataRata(long params){
@@ -426,10 +428,10 @@ bool pengeluaran_rataRata(long params){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : kalkulasi_pengeluaran_rataRata
+        DESKRIPSI : menghitung rata rata dari pengeluaran
+        INPUT : integer target_bulan, integer target_tahun
+        OUTPUT : rata-rata dari pengeluaran
    =======================================================*/
 
 long kalkulasi_pengeluaran_rataRata(int target_bulan, int target_tahun){
@@ -452,10 +454,10 @@ long kalkulasi_pengeluaran_rataRata(int target_bulan, int target_tahun){
 
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : persentase_dari_sisa_total_pemasukan
+        DESKRIPSI : menghitung persentase dari sisa total dari seluruh pemasukan
+        INPUT : long saldo, long pemasukan
+        OUTPUT : persentase dari sisa total dari seluruh pemasukan
    =======================================================*/
 
 float persentase_dari_sisa_total_pemasukan(long saldo, long pemasukan){
@@ -467,10 +469,10 @@ float persentase_dari_sisa_total_pemasukan(long saldo, long pemasukan){
 
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : get_nominal_pos
+        DESKRIPSI : untuk mengambil nominal dari pos yang sedang dicari
+        INPUT : string pos
+        OUTPUT : batas nominal dari pos
    =======================================================*/
 
 long get_nominal_pos(char *pos){
@@ -495,10 +497,10 @@ long get_nominal_pos(char *pos){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : rekap_pengeluaran
+        DESKRIPSI : modul yang berfungsi untuk mengambil data agar bisa ditampilkan di rekapitulasi keuangan
+        INPUT : int target_bulan, int target_tahun, int *count
+        OUTPUT : array yang berisi data rekap pengeluaran
    =======================================================*/
 
 struct RekapPengeluaran *rekap_pengeluaran(int target_bulan, int target_tahun, int *count){
@@ -548,6 +550,13 @@ struct RekapPengeluaran *rekap_pengeluaran(int target_bulan, int target_tahun, i
     return result;
 }
 
+/* =======================================================
+        MODUL : Laporan_keuangan
+        DESKRIPSI : menampilkan laporan keuangan dari user sesuai dengan bulan dan tahun yang dipilih user
+        INITIAL STATE : table laporan keuangan belum ditampilkan
+        FINAL STATE : tabel laporan keuangan berhasil ditampilkan
+   =======================================================*/
+
 void Laporan_keuangan(int bulan, int tahun){
     int jumlah_transaksi_pemasukan;
     int jumlah_transaksi_pengeluaran;
@@ -580,6 +589,13 @@ void Laporan_keuangan(int bulan, int tahun){
     free(rekapPengeluaran);
 }
 
+/* =======================================================
+        MODUL : input_tahun
+        DESKRIPSI : berfungsi agar user bisa menginput tahun
+        INITIAL STATE : user belum menginput tahun
+        FINAL STATE : user sudah menginput tahun
+   =======================================================*/
+
 void input_tahun(int *navigasi_tahun){
     int jumlah_tahun;
     int *tahun_array = data_tahun_dari_transaksi(&jumlah_tahun);
@@ -602,6 +618,13 @@ void input_tahun(int *navigasi_tahun){
     }
     free(tahun_array);
 }
+
+/* =======================================================
+        MODUL : menu_utama_rekapitulasi
+        DESKRIPSI : menampilkan menu utama dari rekapitulasi
+        INITIAL STATE : user belum memilih bulan dan tahun yang akan ditampilkan di laporan
+        FINAL STATE : user sudah memilih bulan dan tahun
+   =======================================================*/
 
 void menu_utama_rekapitulasi(){
     bool menu = true;

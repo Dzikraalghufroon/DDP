@@ -12,6 +12,14 @@ void menu_transaksi();
 void menu_utama_rekapitulasi();
 void menu_riwayat_transaksi();
 
+/* =======================================================
+        MODUL : main
+        DESKRIPSI :berisi program utama yang akan terhubung dengan semua modul
+        INPUT : -
+        OUTPUT : program berhasil
+   =======================================================*/
+
+
 int main(){
     int navigasi;
     bool menu = true;

@@ -39,10 +39,10 @@ bool berhenti_menambah(char var);
 void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas);
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : cekPos_anggaran
+        DESKRIPSI : modul yang berfungsi untuk mengecek apakah data sudah ada di pos anggaran
+        INPUT : string data
+        OUTPUT : boolean true atau false
    =======================================================*/
 
 
@@ -62,11 +62,25 @@ bool cekPos_anggaran(const char *data){
     return false;
 } 
 
+/* =======================================================
+        MODUL : input_pos_anggaran
+        DESKRIPSI : modul agar user menginput nama dari pos anggaran
+        INITIAL STATE : user belum menginput pos anggaran
+        FINAL STATE : user sudah menginput pos anggaran
+   =======================================================*/
+
 void input_pos_anggaran(char *pos){
     printf("\tMasukkan Nama pos: ");
     fgets(pos, sizeof(pos), stdin);
     pos[strcspn(pos, "\n")] = '\0';
 }
+
+/* =======================================================
+        MODUL : pos_anggaran_sudah_ada
+        DESKRIPSI : menampilkan peringatan bahwa pos anggaran yang diinput user sudah ada
+        INITIAL STATE : peringatan belum muncul
+        FINAL STATE : peringatan muncul
+   =======================================================*/
 
 void pos_anggaran_sudah_ada(char *pos){
     printf("Pos '%s' sudah ada di dalam file. Silakan masukkan nama lain.\n",pos);
@@ -74,10 +88,24 @@ void pos_anggaran_sudah_ada(char *pos){
     getchar();
 }
 
+/* =======================================================
+        MODUL : input_batas_anggaran
+        DESKRIPSI : modul untuk user menginput batas anggaran
+        INITIAL STATE : user belum menginput batas anggaran
+        FINAL STATE : user sudah menginput batas anggaran
+   =======================================================*/
+
 void input_batas_anggaran(long *nominal){
     printf("\tMasukkan batas anggaran: ");
     scanf(" %ld", nominal);
 }
+
+/* =======================================================
+        MODUL : validasi_batas_anggaran
+        DESKRIPSI : menampilkan peringatan bahwa user menginput nominal tidak lebih dari 0
+        INITIAL STATE : peringatan belum muncul
+        FINAL STATE : peringatan muncul
+   =======================================================*/
 
 void validasi_batas_anggaran(long nominal){
     printf("Anda menetapkan batas anggaran sebesar '%ld', batas anggaran "
@@ -85,6 +113,13 @@ void validasi_batas_anggaran(long nominal){
     printf("Tekan ENTER untuk melanjutkan...");
     getchar();
 }
+
+/* =======================================================
+        MODUL : tanya_lanjut
+        DESKRIPSI : menanyakan kepada user apakah masih ingin menambah data atau sudah selesai
+        INITIAL STATE : user belum memberi jawaban
+        FINAL STATE : user sudah memberi jawaban
+   =======================================================*/
 
 void tanya_lanjut(bool *mengisi){
     bool alert = false;
@@ -113,10 +148,10 @@ void tanya_lanjut(bool *mengisi){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : getPosAnggaran
+        DESKRIPSI : modul yang berfungsi untuk mengambil data dari pos anggaran
+        INPUT : integer jumlahOut
+        OUTPUT : array yang berisi seluruh pos anggaran 
    =======================================================*/
 
 
@@ -155,6 +190,13 @@ struct PosAnggaran *getPosAnggaran(int *jumlahOut) {
     return data;
 }
 
+/* =======================================================
+        MODUL : menyimpan_pos_anggaran
+        DESKRIPSI : modul untuk menyimpan pos anggaran ke file
+        INITIAL STATE : data belum disimpan
+        FINAL STATE : data sudah disimpan
+   =======================================================*/
+
 void menyimpan_pos_anggaran(char *nama_pos, long nominal){
     getchar();
         FILE *fp = fopen("pos_anggaran.txt", "a");
@@ -169,10 +211,10 @@ void menyimpan_pos_anggaran(char *nama_pos, long nominal){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : edit_data_dari_file_pos_anggaran
+        DESKRIPSI : mengedit data pos anggaran dari file pos_anggaran.txt
+        INPUT : string namaCari
+        OUTPUT : boolean true atau false
    =======================================================*/
 
 
@@ -209,10 +251,10 @@ bool edit_data_dari_file_pos_anggaran(char *namaCari){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : hapus_data_dari_file_pos_anggaran
+        DESKRIPSI : menghapus data pos anggaran dari file pos_anggaran.txt
+        INPUT : string namaCari
+        OUTPUT : boolean true atau false
    =======================================================*/
 
 
@@ -247,6 +289,12 @@ bool hapus_data_dari_file_pos_anggaran(char *namaCari){
     return result;
 }
 
+/* =======================================================
+        MODUL : tambah_pos_anggaran
+        DESKRIPSI : berfungsi untuk menambah pos anggaran
+        INITIAL STATE : file belum ditambah
+        FINAL STATE : file sudah ditambah
+   =======================================================*/
 
 void tambah_pos_anggaran(){
     struct PosAnggaran data;
@@ -286,6 +334,13 @@ void tambah_pos_anggaran(){
     }
 }
 
+/* =======================================================
+        MODUL : edit_pos_anggaran
+        DESKRIPSI : berfungsi untuk mengedit pos anggaran
+        INITIAL STATE : file belum diedit
+        FINAL STATE : file sudah diedit
+   =======================================================*/
+
 void edit_pos_anggaran(){
     char namaPos[50];
     bool success = false;
@@ -311,6 +366,14 @@ void edit_pos_anggaran(){
     getchar();
     free(daftarPosAnggaran);
 }
+
+/* =======================================================
+        MODUL : hapus_pos_anggaran
+        DESKRIPSI : berfungsi untuk menghapus pos anggaran
+        INITIAL STATE : file belum dihapus
+        FINAL STATE : file sudah dihapus
+   =======================================================*/
+
 void hapus_pos_anggaran(){
     char namaPos[50];
     bool success = false;
@@ -337,6 +400,12 @@ void hapus_pos_anggaran(){
     free(daftarPosAnggaran);
 }
 
+/* =======================================================
+        MODUL : menu_pos_anggaran
+        DESKRIPSI : berisi menu dari fitur pos anggaran
+        INITIAL STATE : user belum memilih
+        FINAL STATE : user sudah memilih
+   =======================================================*/
 void menu_pos_anggaran() {
     bool menu = true;
     int navigasi;

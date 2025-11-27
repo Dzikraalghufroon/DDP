@@ -28,10 +28,10 @@ struct RekapPengeluaran{
 };
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : file_tidak_ada_atau_kosong
+        DESKRIPSI : untuk memeriksa apakah file tidak ada atau masih kosong
+        INPUT : string nama file
+        OUTPUT : boolean true atau false
    =======================================================*/
 
 bool file_tidak_ada_atau_kosong (const char *namaFile) {
@@ -45,10 +45,10 @@ bool file_tidak_ada_atau_kosong (const char *namaFile) {
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : getTanggal
+        DESKRIPSI : untuk mendapatkan tanggal saat program dijalankan
+        INPUT : -
+        OUTPUT : string berupa tanggal 
    =======================================================*/
 char *getTanggal() {
     static char buffer[11]; 
@@ -64,10 +64,10 @@ char *getTanggal() {
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : validasi_nominal
+        DESKRIPSI : untuk memvalidasi apakah nominal yang diinput besar dari nol
+        INPUT : long nominal
+        OUTPUT : boolean true atau false
    =======================================================*/
 
 bool validasi_nominal(long nominal){
@@ -78,21 +78,10 @@ bool validasi_nominal(long nominal){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
-   =======================================================*/
-
-int array_length(){
-    return 0;
-}
-
-/* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : lanjut_tambah_pos
+        DESKRIPSI : untuk memvalidasi perintah dari user apakah tetap ingin lanjut menambah pos anggaran
+        INPUT : char bernama var
+        OUTPUT : boolean true atau false
    =======================================================*/
 
 bool lanjut_tambah_pos(char var){
@@ -103,10 +92,10 @@ bool lanjut_tambah_pos(char var){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : berhenti_menambah
+        DESKRIPSI : untuk memvalidasi jawaban dari user apakah ingin berhenti untuk menambah pos anggaran
+        INPUT : char bernama var
+        OUTPUT : boolean true atau false
    =======================================================*/
 
 bool berhenti_menambah(char var){
@@ -117,10 +106,12 @@ bool berhenti_menambah(char var){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : tambah_ukuran_array_posAnggaran
+        DESKRIPSI : untuk melakuan realloc pada sebuah array dengan tipe data struck PosAnggaran,
+                    yang berfungsi agar panjang array bertambah dengan X2 ukuran array saat ini
+        INITIAL STATE : array bertipe data struct PosAnggaran penuh, kapasitas masih yang lama 
+        FINAL STATE : array bertipe data struct PosAnggaran sudah bertambah dua kali lipat, kapasitas sudah 
+                        berukuran 2X lipat
    =======================================================*/
 
 void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas){
@@ -137,6 +128,15 @@ void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas){
     *kapasitas = kapasitas_baru;
 }
 
+/* =======================================================
+        MODUL : tambah_ukuran_array_transaksi
+        DESKRIPSI : untuk melakuan realloc pada sebuah array dengan tipe data struck Transaksi,
+                    yang berfungsi agar panjang array bertambah dengan X2 ukuran array saat ini
+        INITIAL STATE : array bertipe data struct Transaksi penuh, kapasitas masih yang lama 
+        FINAL STATE : array bertipe data struct Transaksi sudah bertambah dua kali lipat, kapasitas sudah 
+                        berukuran 2X lipat
+   =======================================================*/
+
 void tambah_ukuran_array_transaksi(struct Transaksi **arr, int *kapasitas){
     int kapasitas_baru = (*kapasitas) * 2;
 
@@ -150,6 +150,15 @@ void tambah_ukuran_array_transaksi(struct Transaksi **arr, int *kapasitas){
     *arr = temp;
     *kapasitas = kapasitas_baru;
 }
+
+/* =======================================================
+        MODUL : tambah_ukuran_array_integer
+        DESKRIPSI : untuk melakuan realloc pada sebuah array dengan tipe data integer,
+                    yang berfungsi agar panjang array bertambah dengan X2 ukuran array saat ini
+        INITIAL STATE : array bertipe data struct integer penuh, kapasitas masih yang lama 
+        FINAL STATE : array bertipe data struct integer sudah bertambah dua kali lipat, kapasitas sudah 
+                        berukuran 2X lipat
+   =======================================================*/
 
 void tambah_ukuran_array_integer(int **arr, int *kapasitas){
     int kapasitas_baru = (*kapasitas) * 2;
@@ -165,13 +174,7 @@ void tambah_ukuran_array_integer(int **arr, int *kapasitas){
     *kapasitas = kapasitas_baru;
 }
 
-void trim(char *s) {
-    // trim leading
-    char *p = s;
-    while (isspace((unsigned char)*p)) p++;
-    if (p != s) memmove(s, p, strlen(p)+1);
 
-    // trim trailing
-    size_t len = strlen(s);
-    while (len > 0 && isspace((unsigned char)s[len-1])) s[--len] = '\0';
+void readFile(char *namaFile){
+    
 }

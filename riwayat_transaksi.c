@@ -33,10 +33,10 @@ void realisasi_transaksi_table(struct Transaksi *data, int jumlah);
 void tambah_ukuran_array_transaksi(struct Transaksi **arr, int *kapasitas);
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : get_transaksi
+        DESKRIPSI : sebuah fungsi yang akan mengembalikan nilai dari data transaksi
+        INPUT : variabel dengan nama jumlah_out berupa pointer 
+        OUTPUT : data transaksi didapatkan dan ditampung dalam array struct Transaksi dan variabel jumlah_out memiliki nilai ukuran dari si array yang direturn
    =======================================================*/
 
 struct Transaksi *get_transaksi(int *jumlah_out){
@@ -84,10 +84,10 @@ struct Transaksi *get_transaksi(int *jumlah_out){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : get_transaksi_pemasukan
+        DESKRIPSI : sebuah fungsi yang akan mengembalikan nilai dari data transaksi pemasukan
+        INPUT : variabel dengan nama jumlah_out berupa pointer 
+        OUTPUT : data transaksi dari pemasukan didapatkan dan ditampung dalam array struct Transaksi dan variabel jumlah_out memiliki nilai ukuran dari si array yang direturn
    =======================================================*/
 
 struct Transaksi *get_transaksi_pemasukan(int *jumlah_out){
@@ -136,10 +136,10 @@ struct Transaksi *get_transaksi_pemasukan(int *jumlah_out){
 }
 
 /* =======================================================
-        MODUL : 
-        DESKRIPSI : 
-        INPUT :
-        OUTPUT :
+        MODUL : get_transaksi_pengeluaran
+        DESKRIPSI : sebuah fungsi yang akan mengembalikan nilai dari data transaksi pengeluaran
+        INPUT : variabel dengan nama jumlah_out berupa pointer 
+        OUTPUT : data transaksi dari pengeluaran didapatkan dan ditampung dalam array struct Transaksi dan variabel jumlah_out memiliki nilai ukuran dari si array yang direturn
    =======================================================*/
 
 struct Transaksi *get_transaksi_pengeluaran(int *jumlah_out){
@@ -187,6 +187,12 @@ struct Transaksi *get_transaksi_pengeluaran(int *jumlah_out){
     return data;
 }
 
+/* =======================================================
+        MODUL : tampilkan_riwayat_transaksi
+        DESKRIPSI : modul yang berfungsi untuk menampilkan data riwayat transaksi berupa table
+        INITIAL STATE : table yang menampilkan data riwayat transaksi belum tampil
+        FINAL STATE : table yang menampilkan data riwayat transaksi sudah tampil di layar
+   =======================================================*/
 
 void tampilkan_riwayat_transaksi(){
   int jumlah = 0;
@@ -196,6 +202,13 @@ void tampilkan_riwayat_transaksi(){
   getchar();
 }
 
+/* =======================================================
+        MODUL : tampilkan_riwayat_pemasukan_transaksi
+        DESKRIPSI : modul yang berfungsi untuk menampilkan data riwayat transaksi dengan jenis pemasukan berupa table
+        INITIAL STATE : table yang menampilkan data riwayat transaksi dengan jenis pemasukan belum tampil
+        FINAL STATE : table yang menampilkan data riwayat transaksi dengan jenis pemasukan sudah tampil di layar
+   =======================================================*/
+
 void tampilkan_riwayat_pemasukan_transaksi(){
   int jumlah = 0;
   struct Transaksi *data = get_transaksi_pemasukan(&jumlah);
@@ -204,6 +217,13 @@ void tampilkan_riwayat_pemasukan_transaksi(){
   getchar();
 }
 
+/* =======================================================
+        MODUL : tampilkan_riwayat_pengeluaran_transaksi
+        DESKRIPSI : modul yang berfungsi untuk menampilkan data riwayat transaksi dengan jenis pengeluaran berupa table
+        INITIAL STATE : table yang menampilkan data riwayat transaksi dengan jenis pengeluaran belum tampil
+        FINAL STATE : table yang menampilkan data riwayat transaksi dengan jenis pengeluaran sudah tampil di layar
+   =======================================================*/
+
 void tampilkan_riwayat_pengeluaran_transaksi(){
   int jumlah = 0;
   struct Transaksi *data = get_transaksi_pengeluaran(&jumlah);
@@ -211,6 +231,13 @@ void tampilkan_riwayat_pengeluaran_transaksi(){
   free(data);
   getchar();
 }
+
+/* =======================================================
+        MODUL : menu_riwayat_transaksi
+        DESKRIPSI : menampilkan menu yang memberikan pilihan kepada user untuk memilih apakah ingin menampilkan seluruh riwayat transaksi, hanya pengeluaran, atau hanya pemasukan
+        INITIAL STATE : user belum memilih ingin menampilkan riwayat transaksi apa
+        FINAL STATE : user sudah memilih ingin menampilkan riwayat transaksi apa
+   =======================================================*/
 
 void menu_riwayat_transaksi(){
     int navigasi;
