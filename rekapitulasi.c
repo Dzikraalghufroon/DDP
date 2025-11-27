@@ -40,6 +40,13 @@ void tambah_ukuran_array_transaksi(struct Transaksi **arr, int *kapasitas);
 void tambah_ukuran_array_integer(int **arr, int *kapasitas);
 void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas);
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 char *nama_bulan(int bulan){
     switch (bulan) {
         case 1:
@@ -71,6 +78,13 @@ char *nama_bulan(int bulan){
     }
 }
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 int filter_bulan(char *tanggal){
     int d, m, y;
         if (sscanf(tanggal, "%d/%d/%d", &d, &m, &y) == 3) {
@@ -79,6 +93,13 @@ int filter_bulan(char *tanggal){
         return 0;
 }
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 int filter_tahun(char *tanggal){
     int d, m, y;
         if (sscanf(tanggal, "%d/%d/%d", &d, &m, &y) == 3) {
@@ -86,6 +107,13 @@ int filter_tahun(char *tanggal){
         }
         return 0;
 }
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
 
 bool cek_tahun_sudah_ada(int *tahun_list, int jumlah, int tahun){
     for (int i = 0; i < jumlah; i++) {
@@ -96,6 +124,13 @@ bool cek_tahun_sudah_ada(int *tahun_list, int jumlah, int tahun){
         }
     return false;
 }
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
 
 int *data_tahun_dari_transaksi(int *jumlah_tahun_out) {
     int kapasitas = 10;
@@ -148,6 +183,13 @@ int *data_tahun_dari_transaksi(int *jumlah_tahun_out) {
     return tahun_list; // berisi array tahun unik
 }
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 struct Transaksi *getPemasukan(int *jumlah_out, int target_bulan, int target_tahun){
     int kapasitas = 10;
     *jumlah_out = 0;
@@ -196,6 +238,14 @@ struct Transaksi *getPemasukan(int *jumlah_out, int target_bulan, int target_tah
     return data;
 }
 
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 struct Transaksi *getPengeluaran(int *jumlah_out,int target_bulan, int target_tahun){
     int kapasitas = 10;
     *jumlah_out = 0;
@@ -243,6 +293,14 @@ struct Transaksi *getPengeluaran(int *jumlah_out,int target_bulan, int target_ta
     fclose(readFile);
     return data;
 }
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 char *kondisi_keuangan(int saldo){
     static char kondisi[9]; 
     if (saldo < 0) {
@@ -256,6 +314,14 @@ char *kondisi_keuangan(int saldo){
     }
     return kondisi;
 }
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 
 long pemasukan_total(int *jumlah_data_out,int target_bulan, int target_tahun){
     int jumlah_data =0;
@@ -275,6 +341,14 @@ long pemasukan_total(int *jumlah_data_out,int target_bulan, int target_tahun){
     return total;
 }
 
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 long pengeluaran_total(int *jumlah_data_out,int target_bulan, int target_tahun){
     int jumlah_data = 0;
     long total = 0;
@@ -292,6 +366,14 @@ long pengeluaran_total(int *jumlah_data_out,int target_bulan, int target_tahun){
     }
     return total;
 }
+
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
 
 int hitung_jumlah_transaksi_pengeluaran(){
     FILE *readFile = fopen("data_transaksi.txt", "r");
@@ -314,6 +396,14 @@ int hitung_jumlah_transaksi_pengeluaran(){
     return count;
 }
 
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 long calculate_saldo(int target_bulan, int target_tahun) {
   long income = pemasukan_total(NULL,target_bulan,target_tahun);
   long spending = pengeluaran_total(NULL,target_bulan,target_tahun);
@@ -321,12 +411,26 @@ long calculate_saldo(int target_bulan, int target_tahun) {
 }
 
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 bool pengeluaran_rataRata(long params){
     if (params > 0) {
     return true;
     }
     return false;    
 }
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
 
 long kalkulasi_pengeluaran_rataRata(int target_bulan, int target_tahun){
     long saldo = calculate_saldo(target_bulan, target_tahun);
@@ -347,12 +451,27 @@ long kalkulasi_pengeluaran_rataRata(int target_bulan, int target_tahun){
 }
 
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 float persentase_dari_sisa_total_pemasukan(long saldo, long pemasukan){
     if (pemasukan == 0) {
         return 0; //menandai bahwa error 
     }
     return ((float)saldo / (float)pemasukan) * 100.0f;
 }
+
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
 
 long get_nominal_pos(char *pos){
     char nama[50];
@@ -374,6 +493,13 @@ long get_nominal_pos(char *pos){
     fclose(readFile);
     return 0;
 }
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
 
 struct RekapPengeluaran *rekap_pengeluaran(int target_bulan, int target_tahun, int *count){
     int jumlah_data = 0;

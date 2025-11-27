@@ -26,8 +26,7 @@ struct RekapPengeluaran{
 /* =======================================================
         MODUL : ClearScreen()
         DESKRIPSI : Mengosongkan layar
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void clearScreen() {
@@ -41,8 +40,7 @@ void clearScreen() {
 /* =======================================================
         MODUL : header
         DESKRIPSI : menampilkan tampilan header aplikasi
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void header() {
@@ -54,8 +52,7 @@ void header() {
 /* =======================================================
         MODUL : menu_utama
         DESKRIPSI : menampilkan daftar fitur-fitur utama yang ada di aplikasi
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void menu_utama(){
@@ -74,8 +71,7 @@ void menu_utama(){
 /* =======================================================
         MODUL : menu_pos_anggaran_view
         DESKRIPSI : menampilkan fitur-fitur yang tersedia di bagian pencatatan pos anggaran 
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void menu_pos_anggaran_view(){
@@ -92,8 +88,7 @@ void menu_pos_anggaran_view(){
 /* =======================================================
         MODUL : konfirmasi_penambahan_pos
         DESKRIPSI : menampilkan konirmasi kepada user apakah masih ingin menambah pos anggaran atau tidak
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void konfirmasi_penambahan_pos(){
@@ -138,8 +133,7 @@ void masukkan_nominal(long *nominal){
 /* =======================================================
         MODUL : footer line
         DESKRIPSI : menampilkan garis panjang yang berfungsi sebagai footer
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void footer_line(){
@@ -152,8 +146,7 @@ void footer_line(){
 /* =======================================================
         MODUL : menu_transaksi_view
         DESKRIPSI : menampilkan pilihan untuk user untuk memilih jenis transaksi, apakah pemasukan atau pengeluaran
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void menu_transaksi_view(){
@@ -172,8 +165,7 @@ void menu_transaksi_view(){
 /* =======================================================
         MODUL : input_pemasukan_view
         DESKRIPSI : menampilkan kelayar perintah kepada user, saat ingin menginput pemasukan
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void input_pemasukan_view(){
@@ -188,8 +180,7 @@ void input_pemasukan_view(){
         MODUL : menu_rekapitulasi
         DESKRIPSI : meminta user untuk memilih opsi dalam menampilkan riwayat transaksi apakah hanya pengeluaran
                     atau hanya pemasukan atau keduanya
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void menu_rekapitulasi(){
@@ -222,8 +213,7 @@ void menu_tahun(int *tahun_array, int jumlah_tahun){
 /* =======================================================
         MODUL : menu_bulan
         DESKRIPSI : menampilkan bulan yang akan ditampilkan dalam rekapitulasi keuangan
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void menu_bulan(){
@@ -310,8 +300,7 @@ void laporan_keuangan_footer(char *kondisi, float sisa_dari_pemasukan){
 /* =======================================================
         MODUL : realisasi_tabel_header
         DESKRIPSI : menampilkan header dari table yang akan menampilkan riwayat transaksi
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void realisasi_tabel_header() {
@@ -343,8 +332,7 @@ void realisasi_tabel_row(struct Transaksi *t) {
 /* =======================================================
         MODUL : realisasi_tabel_footer
         DESKRIPSI : menampilkan footer dari table daftar riwayat transaksi
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void realisasi_tabel_footer() {
@@ -356,8 +344,7 @@ void realisasi_tabel_footer() {
         MODUL : realisasi_transaksi_table
         DESKRIPSI : memanggil modul realisasi_tabel_header, realisasi_tabel_row, dan realisasi_tabel_footer
                     untuk disatukan dan ditampilkan kelayar
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void realisasi_transaksi_table(struct Transaksi *data, int jumlah) {
@@ -375,8 +362,7 @@ void realisasi_transaksi_table(struct Transaksi *data, int jumlah) {
         MODUL : tampilan_menu_riwayat_transaksi
         DESKRIPSI : meminta user untuk memilih opsi dalam menampilkan riwayat transaksi apakah hanya pengeluaran
                     atau hanya pemasukan atau keduanya
-        INITIAL STATE :
-        FINAL STATE :
+        
    =======================================================*/
 
 void tampilan_menu_riwayat_transaksi(){

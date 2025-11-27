@@ -27,6 +27,13 @@ struct RekapPengeluaran{
   char status[10];
 };
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 bool file_tidak_ada_atau_kosong (const char *namaFile) {
     FILE *fp = fopen(namaFile, "r");
     //jika file tidak ada return true
@@ -37,6 +44,12 @@ bool file_tidak_ada_atau_kosong (const char *namaFile) {
     return (c == EOF);
 }
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
 char *getTanggal() {
     static char buffer[11]; 
     time_t t = time(NULL);
@@ -50,6 +63,13 @@ char *getTanggal() {
     return buffer;
 }
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 bool validasi_nominal(long nominal){
     if (nominal <= 0) {
     return false;
@@ -57,9 +77,23 @@ bool validasi_nominal(long nominal){
     return true;
 }
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 int array_length(){
     return 0;
 }
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
 
 bool lanjut_tambah_pos(char var){
     if (var == 'y' || var == 'Y') {
@@ -68,12 +102,26 @@ bool lanjut_tambah_pos(char var){
     return false;
 }
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 bool berhenti_menambah(char var){
     if (var == 'n' || var == 'N') {
         return true;
     }
     return false;
 }
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
 
 void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas){
     int kapasitas_baru = (*kapasitas) * 2;

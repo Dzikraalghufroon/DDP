@@ -32,6 +32,13 @@ void tampilan_menu_riwayat_transaksi();
 void realisasi_transaksi_table(struct Transaksi *data, int jumlah);
 void tambah_ukuran_array_transaksi(struct Transaksi **arr, int *kapasitas);
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 struct Transaksi *get_transaksi(int *jumlah_out){
     int kapasitas = 10;
     *jumlah_out = 0;
@@ -75,6 +82,13 @@ struct Transaksi *get_transaksi(int *jumlah_out){
     fclose(readFile);
     return data;
 }
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
 
 struct Transaksi *get_transaksi_pemasukan(int *jumlah_out){
     int kapasitas = 10;
@@ -121,6 +135,13 @@ struct Transaksi *get_transaksi_pemasukan(int *jumlah_out){
     return data;
 }
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 struct Transaksi *get_transaksi_pengeluaran(int *jumlah_out){
     int kapasitas = 10;
     *jumlah_out = 0;
@@ -165,6 +186,7 @@ struct Transaksi *get_transaksi_pengeluaran(int *jumlah_out){
     fclose(readFile);
     return data;
 }
+
 
 void tampilkan_riwayat_transaksi(){
   int jumlah = 0;

@@ -38,6 +38,14 @@ bool lanjut_tambah_pos(char var);
 bool berhenti_menambah(char var);
 void tambah_ukuran_array_posAnggaran(struct PosAnggaran **arr, int *kapasitas);
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
+
 bool cekPos_anggaran(const char *data){
     FILE *fp = fopen("pos_anggaran.txt", "r");
     if (!fp) return false;
@@ -104,6 +112,14 @@ void tanya_lanjut(bool *mengisi){
     }
 }
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
+
 struct PosAnggaran *getPosAnggaran(int *jumlahOut) {
     FILE *fp = fopen("pos_anggaran.txt", "r");
     if (!fp) {
@@ -152,6 +168,14 @@ void menyimpan_pos_anggaran(char *nama_pos, long nominal){
         printf("Data berhasil ditambahkan!\n");
 }
 
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
+
 bool edit_data_dari_file_pos_anggaran(char *namaCari){
     char nama_pos[50]; 
     long nominal; 
@@ -183,6 +207,14 @@ bool edit_data_dari_file_pos_anggaran(char *namaCari){
     rename("Temp_pos_anggaran.txt", "pos_anggaran.txt");
     return result;
 }
+
+/* =======================================================
+        MODUL : 
+        DESKRIPSI : 
+        INPUT :
+        OUTPUT :
+   =======================================================*/
+
 
 bool hapus_data_dari_file_pos_anggaran(char *namaCari){
     char nama_pos[50]; 
